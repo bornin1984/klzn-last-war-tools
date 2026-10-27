@@ -24,4 +24,10 @@ Plain HTML/CSS/ES modules and a single active CSV; no runtime dependencies or bu
 
 All source attachments are preserved unmodified. Potential chest loot, event caps, troop costs, target availability, time and failed/expired discoveries are excluded and disclosed. The model measures long-run net stamina efficiency, not total game value.
 
-GitHub Actions initially selected Ubuntu26.04 via ubuntu-latest, unsupported by pinned Playwright1.58.2. The QA runner is pinned to Ubuntu24.04 for compatible browser dependencies. Publication API returned HTTP403 (integration lacks Pages-setting permissions); main was successfully pushed. User action required in Settings → Pages to choose main / root before live verification.
+GitHub Actions initially selected Ubuntu26.04 via ubuntu-latest, unsupported by pinned Playwright1.58.2. The QA runner is pinned to Ubuntu24.04 for compatible browser dependencies. Publication API returned HTTP403 (integration lacks Pages-setting permissions); main was successfully pushed. The user subsequently enabled main / root in Settings → Pages.
+
+## Public deployment verification
+
+GitHub Pages is built, public and HTTPS-enforced at https://bornin1984.github.io/klzn-last-war-tools/ and /gold-zombies/. Both routes return HTTP200. GitHub Calculator QA run40580544578 and Pages deployment40580647056 completed successfully.
+
+25 model tests pass. All249 browser checks also pass against published content at phone375px, tablet768px and desktop1280px. Chromium in this sandbox rejected the environment interception certificate even after importing the supplied CA; the final live-content browser run used a temporary local bridge that fetched each remote file with Python HTTPS certificate validation enabled. No site assets were substituted or cached locally by the bridge. This verifies published functionality in mobile emulation, not a physical phone or direct Chromium TLS path. Separate verified-HTTPS downloads confirm both HTML pages, both scripts, CSS and both datasets match the tested repository byte-for-byte. The mobile screenshot was inspected.

@@ -16,3 +16,5 @@ Ruling: user explicitly delegates routine design and publication; execute in fre
 Implementation complete: source attachments preserved; active iron268K; independent review clean after two regression fixes; 25 model tests and249 browser checks pass. See docs/audit-and-qa.md. Publication and live verification follow.
 
 User supplied a complete level55 leader/intel dataset during implementation. Level55 is now the default preset; corrected level40 remains selectable. All screenshots preserved.
+
+Publication complete: user enabled Pages after API403; GitHub deployment and QA succeeded. Both public routes HTTP200, published assets match the repository,249 live-content browser checks pass. See audit-and-qa.md for sandbox certificate/bridge detail.
