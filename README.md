@@ -44,6 +44,12 @@ Public, mobile-first strategy calculators for **Last War: Survival**. Static HTM
 
 Other-boss rewards initially copy the own-boss row; the screenshot has no separate other-boss row. Cost and rewards are independently editable to accommodate different boss levels or mechanics. The CSV stores hunt, own boss and discovery rewards; the other boss defaults are explicitly inferred by the model.
 
+### Additional level 55 evidence
+
+The user supplied [left](sources/boss-level-55-2026-10-16-loot-1.jpg) and [right](sources/boss-level-55-2026-10-16-loot-2.jpg) loot views of a **level 55 boss rally led on October 16, 2026, 16:44:55**. These show 80 medals, 1.6K drone data, 2.7M XP, 825.0K iron, 825.0K bread and 1.0M gold. [Separate displayed-value CSV](sources/gold-zombie-level-55-leader.csv) preserves the abbreviations; expanded K/M values are approximate rather than proof of hidden exact counts. Other item loot is outside the model.
+
+This is evidence of level-dependent leader rewards, not a complete level 55 cycle: discovery rewards and stamina expenditure are not visible. Defaults remain the complete level 40 example. Users can edit own/other leader rewards separately; for a full level 55 comparison they must also supply the applicable discovery rewards. Do not combine level 55 leader rewards with level 40 discoverer rewards and call the result a verified level 55 preset.
+
 ## Mathematical audit
 
 The prior formulas were algebraically consistent with the spreadsheet and its real refund; the initial uncertainty about that refund was resolved by the user and external community evidence. The screenshot's source iron value, rather than its transcription, required correction. The prior implementation also lacked percentage comparisons and cycle totals, silently converted invalid fields to zero, omitted chart y-axis values, produced invalid SVG points for nonpositive denominators, and gave no distinction between leading and free joining. Those are addressed.
