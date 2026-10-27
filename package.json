@@ -1,0 +1,1 @@
+{"name":"klzn-last-war-tools","private":true,"type":"module","scripts":{"test":"node tests/model.test.mjs","test:browser":"node tests/browser.mjs"},"devDependencies":{"playwright":"1.58.2"}}
