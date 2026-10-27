@@ -6,6 +6,8 @@ Public, mobile-first strategy calculators for **Last War: Survival**. Static HTM
 
 **Gold Zombie calculator:** https://bornin1984.github.io/klzn-last-war-tools/gold-zombies/
 
+The calculator has two tabs: **Graph** (three strategy bars for the selected reward) and **Data table** (all reward comparisons and editable source data). A shared **5–10 hunts** slider defaults to **10** and updates both views. Source screenshots and formulas are linked from the table tab rather than displayed as prose on the main view.
+
 ## Gold Zombie strategies
 
 1. **Hunt + own rally:** hunt until you discover a boss, lead its successful rally, claim both leader and discoverer rewards.
@@ -30,7 +32,7 @@ Public, mobile-first strategy calculators for **Last War: Survival**. Static HTM
 
 **User-confirmed gameplay and community corroboration:** the discovery reward genuinely includes **20 stamina**, paid as **two 10-stamina items after the boss is defeated and rewards claimed**. This is a real reward, not merely an accounting convention. It is subtracted once per discovery in long-run **net** stamina. Players still need upfront stamina; the model assumes the returned items are redeemed. The user's in-game check corrects hunt iron to 268,000.
 
-**User observation:** approximately ten Gold Zombies per discovered boss. The spreadsheet uses five. Neither is an official guaranteed drop rate. The slider allows 5–10 in 0.1 increments to express averages.
+**User observation:** approximately ten Gold Zombies per discovered boss. The spreadsheet uses five. Neither is an official guaranteed drop rate. The slider allows 5–10 hunts in whole-number steps, defaulting to 10. The model also supports fractional rates.
 
 **Community evidence, not publisher-certified numerical rules:** leading others' bosses costs twenty, joining is free, and the discoverer receives mail when others kill the boss. No detailed official numerical rulebook was located. Community guides disagree on participant loot fractions, which are not modeled.
 
@@ -79,9 +81,9 @@ For each reward independently:
 | Hunt + others rally | `N×G + D` | `N×H` | `N×H − C` | `10×(N×G+D)/(N×H−C)` |
 | Rally others only | `O` | `J` | `J` | `10×O/J` |
 
-Percentage of A relative to B: `100 × (A/B − 1)`. Both zero is displayed as 0%; a positive value relative to zero is N/A. Nonpositive net stamina or numerical overflow yields N/A and is excluded from best-value rankings and chart lines. Blank, negative, non-finite or >1 trillion assumptions produce a visible validation message. Zero input costs are allowed for exploration but do not create infinite efficiency. Comparisons use full precision, with a relative 1e-10 tolerance for ties; formatting rounds only the display.
+Percentage of A relative to B: `100 × (A/B − 1)`. Both zero is displayed as 0%; a positive value relative to zero is N/A. Nonpositive net stamina or numerical overflow yields N/A and is excluded from best-value rankings; unavailable chart bars are empty. Blank, negative, non-finite or >1 trillion assumptions produce a visible validation message. Zero input costs are allowed for exploration but do not create infinite efficiency. Comparisons use full precision, with a relative 1e-10 tolerance for ties; formatting rounds only the display.
 
-The chart samples every 0.1 hunts, marks every integer rate, uses a zero y-axis baseline, and shares the same pure calculation module as both result tables. No unlike rewards are summed into an arbitrary score.
+The graph shows three proportional horizontal bars, one for each strategy, for the chosen reward and hunt rate. Its scale starts at zero and stays fixed while moving the slider (computed over the full 5–10 range), so changes remain visually comparable. Graph and table use the same pure calculation module. No unlike rewards are summed into an arbitrary score.
 
 ### Which strategy wins?
 
@@ -132,15 +134,16 @@ CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 BASE_URL=https://bornin1984.github.io/klzn-last-war-tools npm run test:browser
 ```
 
-Checks cover 375px, 768px and 1280px viewports, directory navigation, all 6 metrics × 6 integer discovery rates, chart/table numerical agreement, keyboard chart selection, edits, reset, invalid fields and zero rewards. Browser testing is mobile emulation, not physical-device certification.
+267 browser checks cover 375px, 768px and 1280px viewports, both presets, all 6 metrics × 6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
 
 ## Structure and maintenance
 
 - `index.html`: directory. Add a descriptive link when a calculator is ready.
-- `assets/site.css`: shared responsive design, no font or chart CDN.
+- `assets/site.css`: directory styling.
+- `gold-zombies/calculator.css`: compact responsive graph/table styling; no font or chart CDN.
 - `gold-zombies/index.html`: calculator content, controls and evidence labels.
 - `gold-zombies/model.mjs`: pure math, validation and chart range; no DOM or display rounding.
-- `gold-zombies/app.mjs`: CSV loading, inputs, comparison tables and SVG chart.
+- `gold-zombies/app.mjs`: CSV loading, shared slider, accessible tabs, comparison/source tables and proportional bars.
 - `sources/`: original evidence, original transcription, corrected data and cited research.
 - `tests/`: Node mathematical regression tests and Playwright browser checks.
 
