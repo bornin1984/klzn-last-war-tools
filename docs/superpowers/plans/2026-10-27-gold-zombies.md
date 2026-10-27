@@ -13,4 +13,6 @@ Review focus: zero baselines and costs; non-finite/blank/negative inputs; ties/f
 Progress: repository fully read (4 files); source transcription matches screenshot; initial credit uncertainty resolved by user and community guides. Hunt iron corrected to 268,000 per user, original 168,000 transcription preserved. Pages GET returns 404; repository admin access confirmed.
 Ruling: user explicitly delegates routine design and publication; execute in fresh clone on audit-gold-zombies branch without further approval gates.
 
-Implementation complete: source attachments preserved; active iron268K; independent review clean after two regression fixes; 23 model tests and138 browser checks pass. See docs/audit-and-qa.md. Publication and live verification follow.
+Implementation complete: source attachments preserved; active iron268K; independent review clean after two regression fixes; 25 model tests and249 browser checks pass. See docs/audit-and-qa.md. Publication and live verification follow.
+
+User supplied a complete level55 leader/intel dataset during implementation. Level55 is now the default preset; corrected level40 remains selectable. All screenshots preserved.

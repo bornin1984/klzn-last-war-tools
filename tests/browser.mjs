@@ -11,8 +11,15 @@ try {
   await page.goto(`${base}/`);await page.locator('a.directory').click();
   await page.locator('#calculated').waitFor({state:'visible'});
   assert.equal(await page.locator('#credit').inputValue(),'20');checks++;
+  assert.equal(await page.locator('#preset').inputValue(),'55');
+  assert.equal(await page.locator('#inputs input[data-row="0"][data-key="discovery"]').inputValue(),'300');
+  await page.selectOption('#preset','40');
+  assert.equal(await page.locator('#inputs input[data-row="0"][data-key="discovery"]').inputValue(),'270');
+  await page.selectOption('#preset','55');checks++;
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));checks++;
-  for(let m=0;m<6;m++){
+  for(const preset of ['55','40']){
+   await page.selectOption('#preset',preset);
+   for(let m=0;m<6;m++){
    await page.selectOption('#metric',String(m));
    for(const n of [5,6,7,8,9,10]){
     await page.locator('#n').fill(String(n));await page.locator('#n').dispatchEvent('input');
@@ -29,6 +36,8 @@ try {
     assert.equal(data.bad,false);checks++;
    }
   }
+  }
+  await page.selectOption('#preset','55');
   await page.selectOption('#metric','0');await page.locator('#range button[data-rate="5"]').click();
   assert.equal(await page.locator('#n').inputValue(),'5');checks++;
   await page.locator('#chart [data-rate="10"][data-strategy="0"]').focus();await page.keyboard.press('Enter');
@@ -50,5 +59,5 @@ try {
   if(width===375){await page.locator('#assumptions summary').click();await page.screenshot({path:process.env.SCREENSHOT||'/tmp/klzn-mobile.png',fullPage:true});}
   await page.close();
  }
- console.log(`PASS: ${checks} browser checks; six metrics × six rates × three viewports, edits, invalid values, zero rewards, keyboard, chart/table agreement.`);
+ console.log(`PASS: ${checks} browser checks; two presets × six metrics × six rates × three viewports, edits, invalid values, zero rewards, keyboard, chart/table agreement.`);
 }finally{await browser.close();}

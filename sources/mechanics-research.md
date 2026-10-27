@@ -77,4 +77,8 @@ This Google Play editorial associated with the game confirms the broad event flo
 
 ## Level 55 leader evidence
 
-User supplied [loot left](boss-level-55-2026-10-16-loot-1.jpg) and [loot right](boss-level-55-2026-10-16-loot-2.jpg) from a level55 boss rally they led, timestamp 2026-10-16 16:44:55. Visible leader loot: 80 medals, 1.6K data, 2.7M XP, 825.0K iron, 825.0K bread, 1.0M gold. Abbreviated K/M values may hide precision. [Displayed-value CSV](gold-zombie-level-55-leader.csv) remains separate from the level40 baseline. Other items are outside the six-resource model. These views do not show discovery rewards or stamina consumption; no complete level55 preset is inferred.
+User supplied [loot left](boss-level-55-2026-10-16-loot-1.jpg) and [loot right](boss-level-55-2026-10-16-loot-2.jpg) from a level55 boss rally they led, timestamp 2026-10-16 16:44:55. Visible leader loot: 80 medals, 1.6K data, 2.7M XP, 825.0K iron, 825.0K bread, 1.0M gold. The user confirmed that the expanded K/M values are accurate. [Displayed-value CSV](gold-zombie-level-55-leader.csv) remains separate from the level40 baseline. Other items are outside the six-resource model. These views do not show discovery rewards or stamina consumption; at the time these views arrived, no complete level55 preset was inferred.
+
+### Level55 discovery evidence completes preset
+
+The user subsequently supplied [level55 intel reward mail](boss-level-55-intel.jpg). It explicitly identifies a discovered Lv.55 Zombie Boss eliminated by an alliance member and shows **300 medals, two 10-stamina items, 825.0K iron, 825.0K bread, 1.0M gold, 2.7M XP, 1.6K drone data**. This directly establishes the discovery payout and real stamina reward and completes the level55 dataset. The active default CSV now uses the level55 leader/intel evidence; corrected level40 stays separately selectable. Display abbreviations are retained in evidence; the user confirmed the expanded numeric inputs as accurate.

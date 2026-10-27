@@ -20,7 +20,8 @@ Public, mobile-first strategy calculators for **Last War: Survival**. Static HTM
 - [Original transcription](sources/gold-zombie-spreadsheet.csv): literal reward values from that image, including **168,000 hunt iron**. This remains separate from the corrected active data.
 - [In-game screenshot, August 5](sources/invading-zombie-august-5.jpg): user-supplied level-10 Invading Zombie screen, year unspecified. Directly shows 10 stamina, 10 medals, 1.3K drone data, 263K XP, 268K iron and 268K bread. Gold is outside the visible horizontal reward area, so this image does not independently verify gold. Potential rewards are excluded from this model.
 - [October 22, 2026 kill report, left view](sources/zombie-kill-2026-10-22-loot-1.jpg) and [right view](sources/zombie-kill-2026-10-22-loot-2.jpg): two horizontal loot views of the same battle report (ID 1430091843144044982). Together they directly confirm all six active hunt rewards, including 268K gold and iron. Extra chest loot is visible but is outside the six-resource comparison. Neither view establishes the discovery or boss reward. Original images are preserved unchanged.
-- [Active calculator rewards](sources/gold-zombie-rewards.csv): **268,000 hunt iron**, after the user independently checked and corrected this value. The August 5 in-game screenshot and a community reward guide corroborate 268,000. Every other reward agrees with the original image.
+- [Default level 55 rewards](sources/gold-zombie-rewards.csv): directly evidenced hunt, leader and intel rewards from user screenshots. The user confirmed that expanded K/M values are exact. [Level 55 intel screenshot](sources/boss-level-55-intel.jpg) shows 300 discoverer medals and two 10-stamina items.
+- [Selectable level 40 rewards](sources/gold-zombie-level-40.csv): the original spreadsheet boss/discovery values with **268,000 hunt iron**, corrected from direct game evidence. Switching presets changes leader and discovery rewards together; it resets transient edits.
 - [Cited mechanics research](sources/mechanics-research.md): detailed community guides, Reddit discussions, Google Play editorial and an official-site check, with evidence limits and conflicting source details.
 
 ### Evidence status
@@ -33,22 +34,22 @@ Public, mobile-first strategy calculators for **Last War: Survival**. Static HTM
 
 **Community evidence, not publisher-certified numerical rules:** leading others' bosses costs twenty, joining is free, and the discoverer receives mail when others kill the boss. No detailed official numerical rulebook was located. Community guides disagree on participant loot fractions, which are not modeled.
 
-### All active source data
+### Default source data: level 55
 
 | Event | Stamina spent | Stamina returned | Courage medals | Drone data | Hero XP | Iron | Bread | Gold |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Gold Zombie kill | 10 | 0 | 10 | 1,300 | 263,000 | 268,000 | 268,000 | 268,000 |
-| Own boss rally led, level 40 | 20 | 0 | 80 | 1,500 | 2,200,000 | 735,000 | 735,000 | 936,000 |
-| Successful discovery, claimed | 0 | 20 | 270 | 1,500 | 2,200,000 | 735,000 | 735,000 | 936,000 |
-| Other boss rally led | 20 | 0 | 80 | 1,500 | 2,200,000 | 735,000 | 735,000 | 936,000 |
+| Own boss rally led, level 55 | 20 | 0 | 80 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
+| Successful discovery, claimed | 0 | 20 | 300 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
+| Other boss rally led | 20 | 0 | 80 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
 
 Other-boss rewards initially copy the own-boss row; the screenshot has no separate other-boss row. Cost and rewards are independently editable to accommodate different boss levels or mechanics. The CSV stores hunt, own boss and discovery rewards; the other boss defaults are explicitly inferred by the model.
 
 ### Additional level 55 evidence
 
-The user supplied [left](sources/boss-level-55-2026-10-16-loot-1.jpg) and [right](sources/boss-level-55-2026-10-16-loot-2.jpg) loot views of a **level 55 boss rally led on October 16, 2026, 16:44:55**. These show 80 medals, 1.6K drone data, 2.7M XP, 825.0K iron, 825.0K bread and 1.0M gold. [Separate displayed-value CSV](sources/gold-zombie-level-55-leader.csv) preserves the abbreviations; expanded K/M values are approximate rather than proof of hidden exact counts. Other item loot is outside the model.
+The user supplied [left](sources/boss-level-55-2026-10-16-loot-1.jpg) and [right](sources/boss-level-55-2026-10-16-loot-2.jpg) loot views of a **level 55 boss rally led on October 16, 2026, 16:44:55**. These show 80 medals, 1.6K drone data, 2.7M XP, 825.0K iron, 825.0K bread and 1.0M gold. [Separate displayed-value CSV](sources/gold-zombie-level-55-leader.csv) preserves the abbreviations; the user confirmed that expanded K/M values are accurate. Other item loot is outside the model.
 
-This is evidence of level-dependent leader rewards, not a complete level 55 cycle: discovery rewards and stamina expenditure are not visible. Defaults remain the complete level 40 example. Users can edit own/other leader rewards separately; for a full level 55 comparison they must also supply the applicable discovery rewards. Do not combine level 55 leader rewards with level 40 discoverer rewards and call the result a verified level 55 preset.
+The subsequently supplied [level 55 discovery/intel screen](sources/boss-level-55-intel.jpg) completes the cycle: **300 medals, two 10-stamina items, 1.6K data, 2.7M XP, 825K iron and bread, 1.0M gold**. It explicitly says the discovered level55 boss was eliminated. The full level55 evidence is now the default; level40 remains selectable. The user confirmed displayed 1.0M/2.7M as accurate values of 1,000,000/2,700,000.
 
 ## Mathematical audit
 
@@ -84,7 +85,7 @@ The chart samples every 0.1 hunts, marks every integer rate, uses a zero y-axis 
 
 ### Which strategy wins?
 
-With corrected defaults and the 20-stamina reward:
+With the **level 40** preset and the 20-stamina reward:
 
 - **Medals, drone data, iron and bread:** hunt and let others lead throughout N=5–10.
 - **Hero XP:** hunt and let others lead below approximately **5.257** hunts/discovery; lead others' bosses above that.
@@ -94,6 +95,8 @@ With corrected defaults and the 20-stamina reward:
 With identical own/other leader costs and rewards, own-rally efficiency is a stamina-weighted average of the other two strategies (when both component costs are positive). It therefore cannot be the unique efficiency winner. Editing the separate rally costs/rewards can change that. For defaults, each finite break-even follows the expression below. A nonpositive denominator means no positive crossing and hunting is favored with these positive rewards.
 
 `N_break_even = (R×D + B×C) / (B×H − R×G)` when `O=B` and `J=R`.
+
+With the **default level 55** preset, hunt + others rally wins medals, drone data, iron and bread throughout N=5–10. Rally others only wins XP throughout that range (crossing at approximately 4.968, below the slider). Gold switches from hunt + others rally to rally others only at approximately **8.621**. These thresholds use the source-player-confirmed amounts. Own rally again lies between the other two.
 
 These are stamina-efficiency statements, not universal recommendations. The model assumes successful kills, collected discoverer rewards, no relevant daily caps, and linear repeats. Time, troops, healing, expired bosses, random loot, leaderboard rewards, free joins and boss availability are excluded.
 
@@ -114,7 +117,7 @@ Node 20+ tests (no installation required):
 npm test
 ```
 
-23 model tests include independent fixtures at N=5,6,7,8,9,10 with refunds 0 and 20 for all six rewards and three strategies; literal screenshot totals; corrected iron; separate other-rally inputs; invalid denominators; zero rewards; bad inputs; ties/zero percentage baselines; fractional range consistency; subnormal stamina overflow.
+25 model tests include independent fixtures at N=5,6,7,8,9,10 with refunds 0 and 20 for all six rewards and three strategies; literal screenshot totals; both reward presets; corrected iron; separate other-rally inputs; invalid denominators; zero rewards; bad inputs; ties/zero percentage baselines; fractional range consistency; subnormal stamina overflow.
 
 Browser tests (development dependencies only):
 

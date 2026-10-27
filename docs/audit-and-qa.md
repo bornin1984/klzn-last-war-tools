@@ -10,11 +10,13 @@ Rally-only means leading others' bosses. Free joining with reduced loot is a dif
 
 ## Verification
 
-- `npm test`: 23 passing tests. Six metrics, all three strategies at rates 5–10, with 0/20 refund; literal original totals; corrected iron; independent other-rally settings; invalid/zero inputs; percentage baselines; fractional range; numeric overflow.
-- `CHROMIUM_PATH=/usr/bin/chromium npm run test:browser`: 138 passing checks on 375px, 768px and 1280px Chromium viewports. Chart values, range table and current table agree for each reward at rates 5–10. Input editing, reset, keyboard chart selection, blank fields, zero rewards, tiny-value winner ranking and page containment checked. No page JavaScript errors.
+- `npm test`: 25 passing tests. Six metrics, all three strategies at rates 5–10, with 0/20 refund; literal original totals; corrected iron; independent other-rally settings; invalid/zero inputs; percentage baselines; fractional range; numeric overflow.
+- `CHROMIUM_PATH=/usr/bin/chromium npm run test:browser`: 249 passing checks on 375px, 768px and 1280px Chromium viewports. Chart values, range table and current table agree for both level 40/55 presets and each reward at rates 5–10. Input editing, reset, keyboard chart selection, blank fields, zero rewards, tiny-value winner ranking and page containment checked. No page JavaScript errors.
 - `node --check gold-zombies/app.mjs` and `git diff --check`: passed.
 - Mobile full-page screenshot inspected. This is browser emulation, not a physical phone test.
 - Fresh independent reviewer: no critical or important issues. Two extreme numerical issues found (overflow, tiny distinct values marked tied); both reproduced with failing tests and fixed, with full suites then passing.
+
+The subsequent level55 leader and intel screenshots complete a second dataset: 80/300 medals, 20 returned stamina, 1.6K data, 2.7M XP, 825K iron/bread and 1.0M gold. Level55 is the default, level40 remains selectable. Expanded K/M values are confirmed accurate by the source player; switching presets resets edits.
 
 ## Decisions
 

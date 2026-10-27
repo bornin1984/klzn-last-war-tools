@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 const fmt=v=>v===null?'N/A':v.toLocaleString('en-US',{maximumFractionDigits:1});
 const pct=v=>v===null?'N/A':`${v>0?'+':''}${fmt(v)}%`;
 const colors=['#f1c56d','#83c9ff','#87e2bc'];
-let rows,source;
+let rows,source,presets;
 const head=names=>'<thead><tr>'+names.map(v=>`<th scope="col">${v}</th>`).join('')+'</tr></thead>';
 const table=(caption,names,body)=>`<caption>${caption}</caption>${head(names)}<tbody>${body}</tbody>`;
 const best=values=>{const valid=values.filter(v=>v!==null);const max=valid.length?Math.max(...valid):null;return values.map(v=>v!==null&&Math.abs(v-max)<=Math.abs(max)*1e-10);};
@@ -52,6 +52,7 @@ function reset(){rows=structuredClone(source);for(const k of Object.keys(default
 function buildInputs(){
  $('inputs').innerHTML=table('Rewards per successful event',['Reward','Gold Zombie','Own boss rally','Discovery','Other boss rally¹'],rows.map((r,i)=>`<tr><th scope="row">${r.name}</th>${['hunt','boss','discovery','join'].map(k=>`<td><input type="number" min="0" max="1000000000000" step="any" required value="${r[k]}" data-row="${i}" data-key="${k}" aria-label="${r.name}: ${k==='join'?'other boss rally':k}"></td>`).join('')}</tr>`).join(''));
 }
+$('preset').addEventListener('change',()=>{source=presets[$('preset').value];reset();});
 for(const id of ['n','hunt','own','join','credit','metric','inputs'])$(id).addEventListener('input',render);
 $('reset').addEventListener('click',reset);
 window.addEventListener('resize',()=>{if(rows)render();});
@@ -60,6 +61,9 @@ for(const id of ['chart','range'])$(id).addEventListener('click',selectRate);
 $('chart').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectRate(e);}});
 try{
  const response=await fetch('../sources/gold-zombie-rewards.csv');if(!response.ok)throw new Error(`Source data failed to load (${response.status}). Please reload.`);
- source=parseRewards(await response.text());if(source.length!==6)throw new Error('Source data is incomplete. Please check the CSV.');
+ source=parseRewards(await response.text());
+ const level40=await fetch('../sources/gold-zombie-level-40.csv');if(!level40.ok)throw new Error('Level 40 evidence failed to load. Please reload.');
+ presets={'55':source,'40':parseRewards(await level40.text())};
+ if(source.length!==6||presets['40'].length!==6)throw new Error('Source data is incomplete. Please check the CSV.');
  $('metric').innerHTML=source.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('');reset();
 }catch(e){$('error').textContent=e.message;$('error').hidden=false;}
