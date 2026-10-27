@@ -23,3 +23,5 @@ The subsequent level55 leader and intel screenshots complete a second dataset: 8
 Plain HTML/CSS/ES modules and a single active CSV; no runtime dependencies or build pipeline. Playwright is a development-only dependency. All visualizations use the same pure calculation model. User edits are transient. No backend, storage, analytics or login.
 
 All source attachments are preserved unmodified. Potential chest loot, event caps, troop costs, target availability, time and failed/expired discoveries are excluded and disclosed. The model measures long-run net stamina efficiency, not total game value.
+
+GitHub Actions initially selected Ubuntu26.04 via ubuntu-latest, unsupported by pinned Playwright1.58.2. The QA runner is pinned to Ubuntu24.04 for compatible browser dependencies. Publication API returned HTTP403 (integration lacks Pages-setting permissions); main was successfully pushed. User action required in Settings → Pages to choose main / root before live verification.
