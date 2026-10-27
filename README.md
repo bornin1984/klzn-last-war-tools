@@ -154,3 +154,5 @@ For another tool, add `<tool-name>/index.html`, keep its model separate, link fr
 GitHub Pages serves **main / (root)**. `.nojekyll` disables unnecessary processing; no build system is required. Pushes to main trigger GitHub's Pages deployment. `.github/workflows/qa.yml` runs model and browser checks. The test dependencies are not used by the published site.
 
 To configure manually if needed: Repository **Settings → Pages → Build and deployment → Deploy from a branch → main → / (root) → Save**. Do not choose `/docs`.
+
+The table tab displays a small animated rotation cue in portrait viewports up to 900px wide. It disappears in landscape and respects reduced-motion preferences. Phone icon: [Lucide smartphone](https://github.com/lucide-icons/lucide/blob/main/icons/smartphone.svg), [ISC license](assets/licenses/lucide.txt); self-hosted, with CSS animation.
