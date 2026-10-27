@@ -6,13 +6,13 @@
   <meta name="description" content="Compare Gold Zombie hunting and rally rewards in an interactive graph and data table.">
   <title>Gold Zombie Calculator · KLZN Last War Tools</title>
   <link rel="stylesheet" href="calculator.css">
-  <script type="module" src="app.mjs?v=2"></script>
+  <script type="module" src="app.mjs?v=3"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to calculator</a>
   <header><a class="brand" href="../"><span class="brand-mark">K</span> KLZN <span>Last War Tools</span></a><a class="repo-link" href="https://github.com/bornin1984/klzn-last-war-tools">GitHub</a></header>
   <main id="main">
-    <div class="title-row"><h1>Gold Zombie Calculator</h1><label class="preset-label"><span>Boss level</span><select id="preset" disabled><option value="55">55</option><option value="40">40</option></select></label></div>
+    <div class="title-row"><h1>Gold Zombie Calculator</h1><span class="level-badge">Level 55 boss</span></div>
     <div class="calculator">
       <div class="discovery-control"><div class="slider-heading"><label for="n">Zombies hunted per discovered boss</label><output id="nLabel" for="n">10</output></div><input id="n" type="range" min="5" max="10" step="1" value="10" disabled><div class="ticks" aria-hidden="true"><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
       <div class="tab-list" role="tablist" aria-label="Calculator view"><button id="graph-tab" role="tab" aria-selected="true" aria-controls="graph-panel" tabindex="0">Graph</button><button id="source-tab" role="tab" aria-selected="false" aria-controls="source-panel" tabindex="-1">Data table</button></div>
@@ -28,7 +28,7 @@
         <div class="table-scroll" tabindex="0" role="region" aria-label="Strategy comparison"><table id="results"></table></div>
         <div class="source-heading"><h2>Source rewards <span>per event</span></h2><div class="table-actions"><button id="edit" type="button" aria-pressed="false" disabled>Edit values</button><button id="reset" type="button" disabled>Reset values</button></div></div>
         <div class="table-scroll" tabindex="0" role="region" aria-label="Source rewards and stamina"><table id="source-table"></table></div>
-        <div class="source-footer"><a id="csv" href="../sources/gold-zombie-rewards.csv" download>Download CSV ↓</a><details><summary>Screenshots &amp; formulas</summary><div class="evidence"><a href="../sources/zombie-kill-2026-10-22-loot-1.jpg">Hunt rewards 1</a><a href="../sources/zombie-kill-2026-10-22-loot-2.jpg">Hunt rewards 2</a><a href="../sources/boss-level-55-2026-10-16-loot-1.jpg">Level 55 rally 1</a><a href="../sources/boss-level-55-2026-10-16-loot-2.jpg">Level 55 rally 2</a><a href="../sources/boss-level-55-intel.jpg">Level 55 discovery</a><a href="../sources/gold-zombie-original.jpg">Original level 40 sheet</a><a href="https://github.com/bornin1984/klzn-last-war-tools#formulas">Formulas &amp; research ↗</a></div></details></div>
+        <div class="source-footer"><a id="csv" href="../sources/gold-zombie-rewards.csv" download>Download CSV ↓</a><details><summary>Screenshots &amp; formulas</summary><div class="evidence"><a href="../sources/zombie-kill-2026-10-22-loot-1.jpg">Hunt rewards 1</a><a href="../sources/zombie-kill-2026-10-22-loot-2.jpg">Hunt rewards 2</a><a href="../sources/boss-level-55-2026-10-16-loot-1.jpg">Level 55 rally 1</a><a href="../sources/boss-level-55-2026-10-16-loot-2.jpg">Level 55 rally 2</a><a href="../sources/boss-level-55-intel.jpg">Level 55 discovery</a><a href="https://github.com/bornin1984/klzn-last-war-tools#formulas">Formulas &amp; research ↗</a></div></details></div>
       </section>
     </div>
   </main>

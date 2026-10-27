@@ -23,7 +23,7 @@ The calculator has two tabs: **Graph** (three strategy bars for the selected rew
 - [In-game screenshot, August 5](sources/invading-zombie-august-5.jpg): user-supplied level-10 Invading Zombie screen, year unspecified. Directly shows 10 stamina, 10 medals, 1.3K drone data, 263K XP, 268K iron and 268K bread. Gold is outside the visible horizontal reward area, so this image does not independently verify gold. Potential rewards are excluded from this model.
 - [October 22, 2026 kill report, left view](sources/zombie-kill-2026-10-22-loot-1.jpg) and [right view](sources/zombie-kill-2026-10-22-loot-2.jpg): two horizontal loot views of the same battle report (ID 1430091843144044982). Together they directly confirm all six active hunt rewards, including 268K gold and iron. Extra chest loot is visible but is outside the six-resource comparison. Neither view establishes the discovery or boss reward. Original images are preserved unchanged.
 - [Default level 55 rewards](sources/gold-zombie-rewards.csv): directly evidenced hunt, leader and intel rewards from user screenshots. The user confirmed that expanded K/M values are exact. [Level 55 intel screenshot](sources/boss-level-55-intel.jpg) shows 300 discoverer medals and two 10-stamina items.
-- [Selectable level 40 rewards](sources/gold-zombie-level-40.csv): the original spreadsheet boss/discovery values with **268,000 hunt iron**, corrected from direct game evidence. Switching presets changes leader and discovery rewards together; it resets transient edits.
+- [Archived level 40 rewards](sources/gold-zombie-level-40.csv): original spreadsheet boss/discovery values with corrected hunt iron. Retained as historical evidence; not an option in the calculator.
 - [Cited mechanics research](sources/mechanics-research.md): detailed community guides, Reddit discussions, Google Play editorial and an official-site check, with evidence limits and conflicting source details.
 
 ### Evidence status
@@ -45,13 +45,13 @@ The calculator has two tabs: **Graph** (three strategy bars for the selected rew
 | Successful discovery, claimed | 0 | 20 | 300 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
 | Other boss rally led | 20 | 0 | 80 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
 
-Other-boss rewards initially copy the own-boss row; the screenshot has no separate other-boss row. Cost and rewards are independently editable to accommodate different boss levels or mechanics. The CSV stores hunt, own boss and discovery rewards; the other boss defaults are explicitly inferred by the model.
+Other-boss rewards initially copy the verified level 55 leader row. Cost and rewards are independently editable to accommodate different boss levels or mechanics. The CSV stores hunt, own boss and discovery rewards; the other boss defaults are explicitly inferred by the model.
 
 ### Additional level 55 evidence
 
 The user supplied [left](sources/boss-level-55-2026-10-16-loot-1.jpg) and [right](sources/boss-level-55-2026-10-16-loot-2.jpg) loot views of a **level 55 boss rally led on October 16, 2026, 16:44:55**. These show 80 medals, 1.6K drone data, 2.7M XP, 825.0K iron, 825.0K bread and 1.0M gold. [Separate displayed-value CSV](sources/gold-zombie-level-55-leader.csv) preserves the abbreviations; the user confirmed that expanded K/M values are accurate. Other item loot is outside the model.
 
-The subsequently supplied [level 55 discovery/intel screen](sources/boss-level-55-intel.jpg) completes the cycle: **300 medals, two 10-stamina items, 1.6K data, 2.7M XP, 825K iron and bread, 1.0M gold**. It explicitly says the discovered level55 boss was eliminated. The full level55 evidence is now the default; level40 remains selectable. The user confirmed displayed 1.0M/2.7M as accurate values of 1,000,000/2,700,000.
+The subsequently supplied [level 55 discovery/intel screen](sources/boss-level-55-intel.jpg) completes the cycle: **300 medals, two 10-stamina items, 1.6K data, 2.7M XP, 825K iron and bread, 1.0M gold**. It explicitly says the discovered level55 boss was eliminated. The calculator uses only the verified level55 evidence; level40 is archived in the repository. The user confirmed displayed 1.0M/2.7M as accurate values of 1,000,000/2,700,000.
 
 ## Mathematical audit
 
@@ -87,7 +87,7 @@ The graph shows three proportional horizontal bars, one for each strategy, for t
 
 ### Which strategy wins?
 
-With the **level 40** preset and the 20-stamina reward:
+For the archived **level 40** spreadsheet example and the 20-stamina reward:
 
 - **Medals, drone data, iron and bread:** hunt and let others lead throughout N=5–10.
 - **Hero XP:** hunt and let others lead below approximately **5.257** hunts/discovery; lead others' bosses above that.
@@ -98,7 +98,7 @@ With identical own/other leader costs and rewards, own-rally efficiency is a sta
 
 `N_break_even = (R×D + B×C) / (B×H − R×G)` when `O=B` and `J=R`.
 
-With the **default level 55** preset, hunt + others rally wins medals, drone data, iron and bread throughout N=5–10. Rally others only wins XP throughout that range (crossing at approximately 4.968, below the slider). Gold switches from hunt + others rally to rally others only at approximately **8.621**. These thresholds use the source-player-confirmed amounts. Own rally again lies between the other two.
+With the verified **level 55** data, hunt + others rally wins medals, drone data, iron and bread throughout N=5–10. Rally others only wins XP throughout that range (crossing at approximately 4.968, below the slider). Gold switches from hunt + others rally to rally others only at approximately **8.621**. These thresholds use the source-player-confirmed amounts. Own rally again lies between the other two.
 
 These are stamina-efficiency statements, not universal recommendations. The model assumes successful kills, collected discoverer rewards, no relevant daily caps, and linear repeats. Time, troops, healing, expired bosses, random loot, leaderboard rewards, free joins and boss availability are excluded.
 
@@ -119,7 +119,7 @@ Node 20+ tests (no installation required):
 npm test
 ```
 
-25 model tests include independent fixtures at N=5,6,7,8,9,10 with refunds 0 and 20 for all six rewards and three strategies; literal screenshot totals; both reward presets; corrected iron; separate other-rally inputs; invalid denominators; zero rewards; bad inputs; ties/zero percentage baselines; fractional range consistency; subnormal stamina overflow.
+25 model tests include independent fixtures at N=5,6,7,8,9,10 with refunds 0 and 20 for all six rewards and three strategies; literal screenshot totals; the active level 55 data and archived level 40 fixtures; corrected iron; separate other-rally inputs; invalid denominators; zero rewards; bad inputs; ties/zero percentage baselines; fractional range consistency; subnormal stamina overflow.
 
 Browser tests (development dependencies only):
 
@@ -134,7 +134,7 @@ CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 BASE_URL=https://bornin1984.github.io/klzn-last-war-tools npm run test:browser
 ```
 
-267 browser checks cover 375px, 768px and 1280px viewports, both presets, all 6 metrics × 6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
+144 browser checks cover 375px, 768px and 1280px viewports, all 6 metrics × 6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
 
 ## Structure and maintenance
 

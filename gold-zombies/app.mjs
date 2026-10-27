@@ -4,7 +4,7 @@ const labels=['Hunt, then rally your own','Hunt, then someone else rallies','Ral
 const colors=['#e98b70','#31ad9a','#7b7ce0'];
 const fmt=v=>v===null?'N/A':v.toLocaleString('en-US',{maximumFractionDigits:1});
 const short=v=>Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(v);
-let presets,source,rows,costs={...defaults},editing=false,activeTab='graph';
+let source,rows,costs={...defaults},editing=false,activeTab='graph';
 const best=values=>{const valid=values.filter(v=>v!==null),max=valid.length?Math.max(...valid):null;return values.map(v=>v!==null&&Math.abs(v-max)<=Math.abs(max)*1e-10);};
 function showTab(tab,focus=false){
  activeTab=tab;
@@ -70,15 +70,12 @@ $('source-table').addEventListener('input',e=>{
 $('edit').addEventListener('click',()=>{editing=!editing;buildSource();});
 $('reset').addEventListener('click',reset);
 $('n').addEventListener('input',render);$('metric').addEventListener('input',render);
-$('preset').addEventListener('change',()=>{
- source=presets[$('preset').value];$('n').value=10;
- $('csv').href=$('preset').value==='55'?'../sources/gold-zombie-rewards.csv':'../sources/gold-zombie-level-40.csv';reset();
-});
 try{
- const paths=['../sources/gold-zombie-rewards.csv','../sources/gold-zombie-level-40.csv'];
- const data=await Promise.all(paths.map(async path=>{const response=await fetch(path);if(!response.ok)throw new Error('Could not load source data. Please reload.');const rows=parseRewards(await response.text());if(rows.length!==6)throw new Error('Source data is incomplete.');return rows;}));
- presets={'55':data[0],'40':data[1]};source=presets['55'];
+ const response=await fetch('../sources/gold-zombie-rewards.csv');
+ if(!response.ok)throw new Error('Could not load source data. Please reload.');
+ source=parseRewards(await response.text());
+ if(source.length!==6)throw new Error('Source data is incomplete.');
  $('metric').innerHTML=source.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('');
- for(const id of ['preset','metric','n','edit','reset'])$(id).disabled=false;
+ for(const id of ['metric','n','edit','reset'])$(id).disabled=false;
  reset();
 }catch(e){$('error').textContent=e.message;$('error').hidden=false;$('chart').innerHTML='';}
