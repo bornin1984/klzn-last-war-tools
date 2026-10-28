@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {calculate,parseRewards,defaults} from '../gold-zombies/model.mjs';
 const base=(process.env.BASE_URL||'http://127.0.0.1:8000').replace(/\/$/,'');
+const level70=parseRewards(readFileSync(new URL('../sources/gold-zombie-level-70.csv',import.meta.url),'utf8'));
 const dataset=parseRewards(readFileSync(new URL('../sources/gold-zombie-rewards.csv',import.meta.url),'utf8'));
 const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
 let checks=0;
@@ -25,6 +26,29 @@ try{
    assert.equal(groups.length,6);
    groups.forEach((bars,m)=>{assert.equal(bars.length,3);bars.forEach((bar,i)=>{assert.ok(Math.abs(bar.value-expected[i].per10[m])<1e-7);assert.ok(Math.abs(bar.width-bar.value/bar.scale*100)<1e-7);});});checks++;
   }
+  await page.locator('#budget').fill('120');
+  const budgetBars=await page.locator('#chart [data-reward]').evaluateAll(nodes=>nodes.map(group=>[...group.querySelectorAll('[data-strategy]')].map(e=>+e.dataset.value)));
+  const per120=dataset.map((_,m)=>calculate(10,defaults,dataset).map(s=>s.per10[m]*12));
+  assert.deepEqual(budgetBars,per120);assert.deepEqual(budgetBars[0],[576,600,480]);checks++;
+  await page.getByRole('tab',{name:'Data table',exact:true}).click();
+  const budgetCells=await page.locator('#results tbody tr').evaluateAll(nodes=>nodes.map(r=>[...r.querySelectorAll('td')].map(c=>+c.dataset.value)));
+  assert.deepEqual(budgetCells,per120);checks++;
+  for(const invalid of ['', '0']){await page.locator('#budget').fill(invalid);assert.equal(await page.locator('#error').isVisible(),true);assert.equal(await page.locator('#chart [data-strategy]').count(),0);checks++;}
+  await page.selectOption('#level','70');
+  for(const amount of [10,120]){
+   await page.locator('#budget').fill(String(amount));
+   for(const n of [5,6,7,8,9,10]){
+    await page.locator('#n').fill(String(n));await page.locator('#n').dispatchEvent('input');
+    const actual=await page.locator('#chart [data-reward]').evaluateAll(nodes=>nodes.map(group=>[...group.querySelectorAll('[data-strategy]')].map(e=>+e.dataset.value)));
+    const expected=level70.map((_,m)=>calculate(n,defaults,level70).map(s=>s.per10[m]*(amount/10)));
+    assert.deepEqual(actual,expected);checks++;
+   }
+  }
+  const source70=await page.locator('#source-table tbody tr[data-row]').evaluateAll(nodes=>nodes.map(r=>[...r.querySelectorAll('td')].map(c=>+c.dataset.value)));
+  assert.deepEqual(source70,level70.map(r=>[r.hunt,r.boss,r.discovery,r.join]));checks++;
+  await page.selectOption('#level','55');
+  assert.equal(await page.locator('#budget').inputValue(),'120');assert.equal(await page.locator('#n').inputValue(),'10');checks++;
+  await page.locator('#budget').fill('10');
    await page.getByRole('tab',{name:'Data table',exact:true}).click();
    assert.equal(await page.locator('#graph-panel').isHidden(),true);
    const source=await page.locator('#source-table tbody tr[data-row]').evaluateAll(nodes=>nodes.map(r=>[...r.querySelectorAll('td')].map(c=>+c.dataset.value)));

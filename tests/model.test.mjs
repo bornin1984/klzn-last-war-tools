@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const model = await import('../gold-zombies/model.mjs').catch(()=>null);
 test('independent calculation module exists',()=>assert.ok(model));
 if(model){
- const {calculate,parseRewards,defaults,percent,range}=model;
+ const {calculate,parseRewards,defaults,percent,range,forStamina}=model;
  const originalRows=parseRewards(readFileSync(new URL('../sources/gold-zombie-spreadsheet.csv',import.meta.url),'utf8'));
  const rows=parseRewards(readFileSync(new URL('../sources/gold-zombie-rewards.csv',import.meta.url),'utf8'));
  const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-7,`${a} != ${b}`);
@@ -56,6 +56,18 @@ if(model){
  test('level 55 direct evidence includes 300 medals and 20 returned stamina',()=>{const r=calculate(10,defaults,rows);assert.equal(r[1].totals[0],400);assert.equal(r[1].stamina,80);assert.equal(r[1].per10[0],50);});
  test('level 40 preset retains corrected hunt iron and original boss values',()=>{const r=parseRewards(readFileSync(new URL('../sources/gold-zombie-level-40.csv',import.meta.url),'utf8'));assert.equal(r[3].hunt,268000);assert.equal(r[0].discovery,270);for(const n of [5,6,7,8,9,10]){const v=calculate(n,defaults,r);const b=[80,1500,2200000,735000,735000,936000],d=[270,1500,2200000,735000,735000,936000];for(let m=0;m<6;m++){close(v[0].per10[m],(n*hunt[m]+b[m]+d[m])/n);close(v[1].per10[m],(n*hunt[m]+d[m])/(n-2));close(v[2].per10[m],b[m]/2);}}});
  test('subnormal stamina cannot leak Infinity into charts',()=>{assert.equal(calculate(5,{...defaults,join:1e-320},rows)[2].per10[0],null);});
+ test('editable stamina budget scales every reward; 120 gives 576/600/480 medals',()=>{
+   const values=forStamina(calculate(10,defaults,rows),120);
+   assert.deepEqual(values.map(s=>s.rewards[0]),[576,600,480]);
+   for(let i=0;i<3;i++)for(let m=0;m<6;m++)close(values[i].rewards[m],calculate(10,defaults,rows)[i].per10[m]*12);
+   for(const amount of [0,-1,NaN,Infinity,1e13])assert.throws(()=>forStamina(calculate(10,defaults,rows),amount));
+ });
+ test('level 70 screenshot values produce correct results at all six rates',()=>{
+   const r=parseRewards(readFileSync(new URL('../sources/gold-zombie-level-70.csv',import.meta.url),'utf8'));
+   const b=[80,1900,3100000,942000,942000,1200000],d=[330,1900,3100000,942000,942000,1200000];
+   assert.deepEqual(r.map(v=>v.boss),b);assert.deepEqual(r.map(v=>v.discovery),d);
+   for(const n of [5,6,7,8,9,10]){const v=calculate(n,defaults,r);for(let m=0;m<6;m++){close(v[0].per10[m],(n*hunt[m]+b[m]+d[m])/n);close(v[1].per10[m],(n*hunt[m]+d[m])/(n-2));close(v[2].per10[m],b[m]/2);}}
+ });
  test('all zero rewards remain finite and tied',()=>{
    assert.ok(calculate(5,defaults,rows.map(r=>({...r,hunt:0,boss:0,discovery:0,join:0}))).every(s=>s.per10.every(v=>v===0)));
  });

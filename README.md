@@ -6,7 +6,7 @@ Public, mobile-first strategy calculators for **Last War: Survival**. Static HTM
 
 **Gold Zombie calculator:** https://bornin1984.github.io/klzn-last-war-tools/gold-zombies/
 
-The calculator has two tabs: **Graph** (all six rewards stacked vertically, each with three horizontal strategy bars) and **Data table** (all reward comparisons and editable source data). A shared **5–10 hunts** slider defaults to **10** and updates both views. Source screenshots and formulas are linked from the table tab rather than displayed as prose on the main view.
+The calculator has two tabs: **Graph** (all six rewards stacked vertically, each with three horizontal strategy bars) and **Data table** (all reward comparisons and editable source data). A shared **5–10 hunts** slider defaults to **10** and updates both views. The **net stamina amount** is editable (default10); all18 bars and comparison-table values scale together. Choose boss level55 or70, with55 the default. Switching levels resets source edits but preserves the hunt rate and stamina amount. Source screenshots and formulas are linked from the table tab rather than displayed as prose on the main view.
 
 ## Gold Zombie strategies
 
@@ -51,7 +51,20 @@ Other-boss rewards initially copy the verified level 55 leader row. Cost and rew
 
 The user supplied [left](sources/boss-level-55-2026-10-16-loot-1.jpg) and [right](sources/boss-level-55-2026-10-16-loot-2.jpg) loot views of a **level 55 boss rally led on October 16, 2026, 16:44:55**. These show 80 medals, 1.6K drone data, 2.7M XP, 825.0K iron, 825.0K bread and 1.0M gold. [Separate displayed-value CSV](sources/gold-zombie-level-55-leader.csv) preserves the abbreviations; the user confirmed that expanded K/M values are accurate. Other item loot is outside the model.
 
-The subsequently supplied [level 55 discovery/intel screen](sources/boss-level-55-intel.jpg) completes the cycle: **300 medals, two 10-stamina items, 1.6K data, 2.7M XP, 825K iron and bread, 1.0M gold**. It explicitly says the discovered level55 boss was eliminated. The calculator uses only the verified level55 evidence; level40 is archived in the repository. The user confirmed displayed 1.0M/2.7M as accurate values of 1,000,000/2,700,000.
+The subsequently supplied [level 55 discovery/intel screen](sources/boss-level-55-intel.jpg) completes the cycle: **300 medals, two 10-stamina items, 1.6K data, 2.7M XP, 825K iron and bread, 1.0M gold**. It explicitly says the discovered level55 boss was eliminated. The calculator offers verified level55 and level70 data; level40 is archived in the repository. The user confirmed displayed 1.0M/2.7M as accurate values of 1,000,000/2,700,000.
+
+### Verified level 70 data
+
+[Level70 CSV](sources/gold-zombie-level-70.csv), transcribed from the user’s October28,2026 [screen1](sources/boss-level-70-screen-1.jpg), [screen2](sources/boss-level-70-screen-2.jpg) and [screen3](sources/boss-level-70-screen-3.jpg). Gold Zombie hunt rewards remain the previously verified values. Leading stamina remains20; discoverer mail explicitly shows two10-stamina items.
+
+| Reward | Lead level70 boss | Discoverer reward |
+|---|---:|---:|
+| Courage medals | 80 | 330 |
+| Drone data | 1,900 | 1,900 |
+| Hero XP | 3,100,000 | 3,100,000 |
+| Iron | 942,000 | 942,000 |
+| Bread | 942,000 | 942,000 |
+| Gold | 1,200,000 | 1,200,000 |
 
 ## Mathematical audit
 
@@ -83,7 +96,7 @@ For each reward independently:
 
 Percentage of A relative to B: `100 × (A/B − 1)`. Both zero is displayed as 0%; a positive value relative to zero is N/A. Nonpositive net stamina or numerical overflow yields N/A and is excluded from best-value rankings; unavailable chart bars are empty. Blank, negative, non-finite or >1 trillion assumptions produce a visible validation message. Zero input costs are allowed for exploration but do not create infinite efficiency. Comparisons use full precision, with a relative 1e-10 tolerance for ties; formatting rounds only the display.
 
-The graph shows all six rewards at once, stacked vertically. Each reward has three proportional horizontal bars and its own labeled scale starting at zero. The slider updates all 18 bars together; each reward’s scale adapts to its values. Compare strategies within each reward, rather than bar lengths across different resources. Graph and table use the same pure calculation module. No unlike rewards are summed into an arbitrary score.
+The graph shows all six rewards at once, stacked vertically. Each reward has three proportional horizontal bars and its own labeled scale starting at zero. The slider updates all 18 bars together; each reward’s scale adapts to its values. Compare strategies within each reward, rather than bar lengths across different resources. Graph and table use the same pure calculation module. For a chosen stamina amount S, expected rewards are `per10 × S / 10`. This includes returned discovery stamina and may represent fractional boss cycles; it is not a simulation of exactly S upfront stamina. S must be positive, finite and at most1trillion. No unlike rewards are summed into an arbitrary score.
 
 ### Which strategy wins?
 
@@ -119,7 +132,7 @@ Node 20+ tests (no installation required):
 npm test
 ```
 
-25 model tests include independent fixtures at N=5,6,7,8,9,10 with refunds 0 and 20 for all six rewards and three strategies; literal screenshot totals; the active level 55 data and archived level 40 fixtures; corrected iron; separate other-rally inputs; invalid denominators; zero rewards; bad inputs; ties/zero percentage baselines; fractional range consistency; subnormal stamina overflow.
+27 model tests include independent fixtures at N=5,6,7,8,9,10 with refunds 0 and 20 for all six rewards and three strategies; literal screenshot totals; the active level 55 data and archived level 40 fixtures; corrected iron; separate other-rally inputs; invalid denominators; zero rewards; bad inputs; ties/zero percentage baselines; fractional range consistency; subnormal stamina overflow.
 
 Browser tests (development dependencies only):
 
@@ -134,7 +147,7 @@ CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 BASE_URL=https://bornin1984.github.io/klzn-last-war-tools npm run test:browser
 ```
 
-54 browser checks cover 375px, 768px and 1280px viewports, all 6 metrics × 6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
+108 browser checks cover 375px, 768px and 1280px viewports, both boss levels,10/120 stamina budgets, all6 metrics ×6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
 
 ## Structure and maintenance
 

@@ -26,3 +26,12 @@ export function percent(value,baseline) {
 export function range(costs,rows) {
   return Array.from({length:51},(_,i)=>{const n=(50+i)/10;return {n,strategies:calculate(n,costs,rows)};});
 }
+
+// Convert normalized efficiencies into expected rewards for a chosen net stamina amount.
+export function forStamina(strategies,stamina) {
+  if(!Number.isFinite(stamina)||stamina<=0||stamina>1e12)throw new RangeError('Enter a stamina amount greater than 0 and no more than 1 trillion.');
+  return strategies.map(s=>({...s,rewards:s.per10.map(v=>{
+    const value=v===null?null:v*(stamina/10);
+    return value!==null&&Number.isFinite(value)?value:null;
+  })}));
+}

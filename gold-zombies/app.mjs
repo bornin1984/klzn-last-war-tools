@@ -1,10 +1,10 @@
-import {defaults,parseRewards,calculate} from './model.mjs';
+import {defaults,parseRewards,calculate,forStamina} from './model.mjs?v=budget-levels-1';
 const $=id=>document.getElementById(id);
 const labels=['Hunt, then rally your own','Hunt, then someone else rallies','Leading rallies only'];
 const colors=['#e98b70','#31ad9a','#7b7ce0'];
 const fmt=v=>v===null?'N/A':v.toLocaleString('en-US',{maximumFractionDigits:1});
 const short=v=>Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(v);
-let source,rows,costs={...defaults},editing=false,activeTab='graph';
+let datasets,source,rows,costs={...defaults},editing=false,activeTab='graph';
 const best=values=>{const valid=values.filter(v=>v!==null),max=valid.length?Math.max(...valid):null;return values.map(v=>v!==null&&Math.abs(v-max)<=Math.abs(max)*1e-10);};
 function showTab(tab,focus=false){
  activeTab=tab;
@@ -34,24 +34,25 @@ function scaleMax(peak){
 function render(){
  if(!rows)return;
  try{
-  const n=$('n').valueAsNumber;
-  const result=calculate(n,costs,rows);
+  const n=$('n').valueAsNumber,budget=$('budget').valueAsNumber;
+  const result=forStamina(calculate(n,costs,rows),budget);
+  document.querySelectorAll('[data-budget-label]').forEach(el=>el.textContent=fmt(budget));
   $('nLabel').value=fmt(n);$('error').hidden=true;
   $('chart').innerHTML=rows.map((reward,m)=>{
-   const values=result.map(s=>s.per10[m]);
+   const values=result.map(s=>s.rewards[m]);
    const scale=scaleMax(Math.max(0,...values.filter(v=>v!==null)));
    const bars=values.map((value,i)=>{
     const width=value===null?0:value/scale*100;
-    return `<div class="group-bar" data-strategy="${i}" data-value="${value===null?'':value}" data-width="${width}" data-scale="${scale}" style="--color:${colors[i]};--width:${width}%" role="img" aria-label="${labels[i]}: ${fmt(value)} ${reward.name} per 10 stamina"><div class="group-track"><div class="bar-fill"></div></div><span class="group-value">${fmt(value)}</span></div>`;
+    return `<div class="group-bar" data-strategy="${i}" data-value="${value===null?'':value}" data-width="${width}" data-scale="${scale}" style="--color:${colors[i]};--width:${width}%" role="img" aria-label="${labels[i]}: ${fmt(value)} ${reward.name} per ${fmt(budget)} net stamina"><div class="group-track"><div class="bar-fill"></div></div><span class="group-value">${fmt(value)}</span></div>`;
    }).join('');
    return `<section class="reward-group" data-reward="${m}" aria-labelledby="reward-${m}"><h3 id="reward-${m}">${reward.name}</h3>${bars}<div class="group-axis" aria-hidden="true">${[0,.25,.5,.75,1].map(f=>`<span>${short(scale*f)}</span>`).join('')}</div></section>`;
   }).join('');
   const headers=labels.map((label,i)=>`<th scope="col"><span class="col-dot" style="--color:${colors[i]}"></span>${label.replace(', then ','<br>')}</th>`).join('');
   $('results').innerHTML=`<thead><tr><th scope="col">Reward</th>${headers}</tr></thead><tbody>${rows.map((r,m)=>{
-   const win=best(result.map(s=>s.per10[m]));
-   return `<tr><th scope="row">${r.name}</th>${result.map((s,i)=>`<td data-value="${s.per10[m]===null?'':s.per10[m]}" class="${win[i]?'best':''}">${fmt(s.per10[m])}</td>`).join('')}</tr>`;
+   const win=best(result.map(s=>s.rewards[m]));
+   return `<tr><th scope="row">${r.name}</th>${result.map((s,i)=>`<td data-value="${s.rewards[m]===null?'':s.rewards[m]}" class="${win[i]?'best':''}">${fmt(s.rewards[m])}</td>`).join('')}</tr>`;
   }).join('')}</tbody>`;
- }catch(e){$('error').textContent='Enter a valid, nonnegative number in each edited cell.';$('error').hidden=false;$('chart').innerHTML='';$('results').innerHTML='';}
+ }catch(e){$('error').textContent=e.message.startsWith('Enter a stamina')?e.message:'Enter a valid, nonnegative number in each edited cell.';$('error').hidden=false;$('chart').innerHTML='';$('results').innerHTML='';}
 }
 function buildSource(){
  const keys=['hunt','boss','discovery','join'];
@@ -72,11 +73,19 @@ $('source-table').addEventListener('input',e=>{
 $('edit').addEventListener('click',()=>{editing=!editing;buildSource();});
 $('reset').addEventListener('click',reset);
 $('n').addEventListener('input',render);
+$('budget').addEventListener('input',render);
+$('level').addEventListener('change',()=>{
+ source=datasets[$('level').value];
+ $('csv').href=$('level').value==='55'?'../sources/gold-zombie-rewards.csv':'../sources/gold-zombie-level-70.csv';
+ reset();
+});
 try{
- const response=await fetch('../sources/gold-zombie-rewards.csv');
- if(!response.ok)throw new Error('Could not load source data. Please reload.');
- source=parseRewards(await response.text());
- if(source.length!==6)throw new Error('Source data is incomplete.');
- for(const id of ['n','edit','reset'])$(id).disabled=false;
+ const paths=['../sources/gold-zombie-rewards.csv','../sources/gold-zombie-level-70.csv'];
+ const data=await Promise.all(paths.map(async path=>{
+  const response=await fetch(path);if(!response.ok)throw new Error('Could not load source data. Please reload.');
+  const rows=parseRewards(await response.text());if(rows.length!==6)throw new Error('Source data is incomplete.');return rows;
+ }));
+ datasets={'55':data[0],'70':data[1]};source=datasets['55'];
+ for(const id of ['n','budget','level','edit','reset'])$(id).disabled=false;
  reset();
 }catch(e){$('error').textContent=e.message;$('error').hidden=false;$('chart').innerHTML='';}

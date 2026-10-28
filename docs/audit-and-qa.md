@@ -43,3 +43,7 @@ Verification:25 unchanged model tests and267 browser checks pass across375/768/1
 Replaced the reward dropdown with six vertically stacked groups of horizontal bars, matching the chat preview approved by the user. Shared three-color legend; each reward has an independent labeled zero-based scale and exact value labels. One slider updates all18 bars and the data table. Level55 source data, math, editing, tabs and portrait rotation cue are unchanged.
 
 Verification:25 model tests pass.54 browser checks cover all18 bars at every rate5–10 across375/768/1280 widths, bar proportionality, source and comparison table values, tabs, edits and reset.
+
+## Editable stamina amount and verified level70 — 2026-10-28
+
+Added shared positive numeric net-stamina field (default10), scaling both chart and table using per10×amount/10.27 model tests pass, including120-stamina medals576/600/480 and invalid amounts. Added verified level70 leader/discoverer screenshots and CSV (medals80/330,data1900,XP3.1M,iron/bread942K,gold1.2M,refund20). Level selector55(default)/70 preserves hunts and stamina amount; resets source edits on switch.108 browser checks pass across375/768/1280, including both levels, all rates/rewards,120 budget, invalid blank/zero budgets, table agreement and reset. Independent review found no important functional/math defects. HTML script/CSS tokens and model import version updated to prevent stale caches.
