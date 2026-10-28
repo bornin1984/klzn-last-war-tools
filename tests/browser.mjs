@@ -18,16 +18,13 @@ try{
   assert.equal(await page.locator('#source-panel').isHidden(),true);checks++;
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   assert.ok(await page.locator('#n').evaluate(e=>e.getBoundingClientRect().bottom<=innerHeight));checks++;
-   for(let m=0;m<6;m++){
-    await page.selectOption('#metric',String(m));
-    for(const n of [5,6,7,8,9,10]){
-     await page.locator('#n').fill(String(n));await page.locator('#n').dispatchEvent('input');
-     const expected=calculate(n,defaults,dataset).map(s=>s.per10[m]);
-     const bars=await page.locator('#chart [data-strategy]').evaluateAll(nodes=>nodes.map(e=>({value:+e.dataset.value,width:+e.dataset.width,scale:+e.dataset.scale})));
-     assert.equal(bars.length,3);
-     bars.forEach((bar,i)=>{assert.ok(Math.abs(bar.value-expected[i])<1e-7);assert.ok(Math.abs(bar.width-bar.value/bar.scale*100)<1e-7);});checks++;
-    }
-   }
+  for(const n of [5,6,7,8,9,10]){
+   await page.locator('#n').fill(String(n));await page.locator('#n').dispatchEvent('input');
+   const expected=calculate(n,defaults,dataset);
+   const groups=await page.locator('#chart [data-reward]').evaluateAll(nodes=>nodes.map(group=>[...group.querySelectorAll('[data-strategy]')].map(e=>({value:+e.dataset.value,width:+e.dataset.width,scale:+e.dataset.scale}))));
+   assert.equal(groups.length,6);
+   groups.forEach((bars,m)=>{assert.equal(bars.length,3);bars.forEach((bar,i)=>{assert.ok(Math.abs(bar.value-expected[i].per10[m])<1e-7);assert.ok(Math.abs(bar.width-bar.value/bar.scale*100)<1e-7);});});checks++;
+  }
    await page.getByRole('tab',{name:'Data table',exact:true}).click();
    assert.equal(await page.locator('#graph-panel').isHidden(),true);
    const source=await page.locator('#source-table tbody tr[data-row]').evaluateAll(nodes=>nodes.map(r=>[...r.querySelectorAll('td')].map(c=>+c.dataset.value)));
@@ -41,17 +38,17 @@ try{
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));checks++;
    await page.getByRole('tab',{name:'Data table',exact:true}).focus();await page.keyboard.press('ArrowLeft');
    assert.equal(await page.getByRole('tab',{name:'Graph',exact:true}).getAttribute('aria-selected'),'true');checks++;
-  await page.locator('#n').fill('10');await page.locator('#n').dispatchEvent('input');await page.selectOption('#metric','0');
+  await page.locator('#n').fill('10');await page.locator('#n').dispatchEvent('input');
   await page.getByRole('tab',{name:'Data table',exact:true}).click();await page.getByRole('button',{name:'Edit values',exact:true}).click();
   await page.locator('#source-table input[data-row="0"][data-key="discovery"]').fill('400');
   await page.getByRole('tab',{name:'Graph',exact:true}).click();
-  assert.equal(+(await page.locator('#chart [data-strategy="1"]').getAttribute('data-value')),62.5);checks++;
+  assert.equal(+(await page.locator('#chart [data-reward="0"] [data-strategy="1"]').getAttribute('data-value')),62.5);checks++;
   await page.getByRole('tab',{name:'Data table',exact:true}).click();
   await page.locator('#source-table input[data-row="0"][data-key="discovery"]').fill('');
   assert.equal(await page.locator('#error').isVisible(),true);checks++;
   await page.getByRole('button',{name:'Reset values',exact:true}).click();assert.equal(await page.locator('#error').isHidden(),true);checks++;
   await page.getByRole('tab',{name:'Graph',exact:true}).click();
-  assert.equal(+(await page.locator('#chart [data-strategy="1"]').getAttribute('data-value')),50);checks++;
+  assert.equal(+(await page.locator('#chart [data-reward="0"] [data-strategy="1"]').getAttribute('data-value')),50);checks++;
   assert.deepEqual(errors,[]);checks++;
   if(width===375||width===1280){await page.screenshot({path:`/tmp/klzn-graph-${width}.png`,fullPage:true});await page.getByRole('tab',{name:'Data table',exact:true}).click();await page.screenshot({path:`/tmp/klzn-source-${width}.png`,fullPage:true});}
   await page.close();

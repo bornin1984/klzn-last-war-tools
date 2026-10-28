@@ -6,7 +6,7 @@ Public, mobile-first strategy calculators for **Last War: Survival**. Static HTM
 
 **Gold Zombie calculator:** https://bornin1984.github.io/klzn-last-war-tools/gold-zombies/
 
-The calculator has two tabs: **Graph** (three strategy bars for the selected reward) and **Data table** (all reward comparisons and editable source data). A shared **5–10 hunts** slider defaults to **10** and updates both views. Source screenshots and formulas are linked from the table tab rather than displayed as prose on the main view.
+The calculator has two tabs: **Graph** (all six rewards stacked vertically, each with three horizontal strategy bars) and **Data table** (all reward comparisons and editable source data). A shared **5–10 hunts** slider defaults to **10** and updates both views. Source screenshots and formulas are linked from the table tab rather than displayed as prose on the main view.
 
 ## Gold Zombie strategies
 
@@ -83,7 +83,7 @@ For each reward independently:
 
 Percentage of A relative to B: `100 × (A/B − 1)`. Both zero is displayed as 0%; a positive value relative to zero is N/A. Nonpositive net stamina or numerical overflow yields N/A and is excluded from best-value rankings; unavailable chart bars are empty. Blank, negative, non-finite or >1 trillion assumptions produce a visible validation message. Zero input costs are allowed for exploration but do not create infinite efficiency. Comparisons use full precision, with a relative 1e-10 tolerance for ties; formatting rounds only the display.
 
-The graph shows three proportional horizontal bars, one for each strategy, for the chosen reward and hunt rate. Its scale starts at zero and stays fixed while moving the slider (computed over the full 5–10 range), so changes remain visually comparable. Graph and table use the same pure calculation module. No unlike rewards are summed into an arbitrary score.
+The graph shows all six rewards at once, stacked vertically. Each reward has three proportional horizontal bars and its own labeled scale starting at zero. The slider updates all 18 bars together; each reward’s scale adapts to its values. Compare strategies within each reward, rather than bar lengths across different resources. Graph and table use the same pure calculation module. No unlike rewards are summed into an arbitrary score.
 
 ### Which strategy wins?
 
@@ -134,7 +134,7 @@ CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 BASE_URL=https://bornin1984.github.io/klzn-last-war-tools npm run test:browser
 ```
 
-144 browser checks cover 375px, 768px and 1280px viewports, all 6 metrics × 6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
+54 browser checks cover 375px, 768px and 1280px viewports, all 6 metrics × 6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
 
 ## Structure and maintenance
 

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Compare Gold Zombie hunting and rally rewards in an interactive graph and data table.">
   <title>Gold Zombie Calculator · KLZN Last War Tools</title>
-  <link rel="stylesheet" href="calculator.css?v=4">
-  <script type="module" src="app.mjs?v=3"></script>
+  <link rel="stylesheet" href="calculator.css?v=5">
+  <script type="module" src="app.mjs?v=5"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to calculator</a>
@@ -19,9 +19,10 @@
       <p id="error" role="alert" hidden></p>
       <noscript>Enable JavaScript to use the calculator. <a href="../sources/gold-zombie-rewards.csv">Download source data</a>.</noscript>
       <section id="graph-panel" role="tabpanel" aria-labelledby="graph-tab">
-        <div class="graph-heading"><div><h2>Rewards per 10 stamina</h2><span id="chart-subtitle" class="muted">After the discovery refund</span></div><label class="reward-label"><span class="sr-only">Reward</span><select id="metric" disabled><option>Courage medals</option></select></label></div>
+        <div class="graph-heading"><div><h2>Rewards per 10 stamina</h2><span class="muted">After the discovery refund · Separate scale for each reward</span></div></div>
+        <div class="strategy-legend" aria-label="Strategies"><span><i style="background:#e98b70"></i>Hunt → own rally</span><span><i style="background:#31ad9a"></i>Hunt → someone else rallies</span><span><i style="background:#7b7ce0"></i>Rallies only</span></div>
         <div id="chart" aria-live="polite"><div class="loading">Loading data…</div></div>
-        <div class="graph-note"><span>Percentages vs rallies only</span><span>Rally = lead the rally</span></div>
+        <div class="graph-note"><span>Compare the three colors within each reward</span><span>Rally = lead the rally</span></div>
       </section>
       <section id="source-panel" role="tabpanel" aria-labelledby="source-tab" hidden>
         <div class="rotate-hint"><img src="../assets/smartphone.svg" width="32" height="32" alt=""><span>Rotate to landscape</span></div>

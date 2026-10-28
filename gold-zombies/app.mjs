@@ -1,4 +1,4 @@
-import {defaults,parseRewards,calculate,percent,range} from './model.mjs';
+import {defaults,parseRewards,calculate} from './model.mjs';
 const $=id=>document.getElementById(id);
 const labels=['Hunt, then rally your own','Hunt, then someone else rallies','Rallies only'];
 const colors=['#e98b70','#31ad9a','#7b7ce0'];
@@ -34,16 +34,18 @@ function scaleMax(peak){
 function render(){
  if(!rows)return;
  try{
-  const n=$('n').valueAsNumber,m=+$('metric').value;
-  const result=calculate(n,costs,rows),values=result.map(s=>s.per10[m]),winners=best(values);
-  const all=range(costs,rows).flatMap(p=>p.strategies.map(s=>s.per10[m])).filter(v=>v!==null);
-  const scale=scaleMax(Math.max(0,...all));
+  const n=$('n').valueAsNumber;
+  const result=calculate(n,costs,rows);
   $('nLabel').value=fmt(n);$('error').hidden=true;
-  $('chart').innerHTML=result.map((s,i)=>{
-   const value=values[i],width=value===null?0:value/scale*100,difference=percent(value,values[2]);
-   const delta=i===2?'—':difference===null?'N/A':`${difference>0?'+':''}${fmt(difference)}%`;
-   return `<div class="bar-row" data-strategy="${i}" data-value="${value===null?'':value}" data-width="${width}" data-scale="${scale}" style="--color:${colors[i]};--width:${width}%"><div class="bar-heading"><span class="strategy-label"><span class="swatch"></span>${labels[i]}</span><span class="bar-numbers"><span class="bar-value"${winners[i]?' style="color:#268777"':''}>${fmt(value)}</span><span class="delta">${delta}</span></span></div><div class="bar-track" role="img" aria-label="${labels[i]}: ${fmt(value)} ${rows[m].name} per 10 stamina"><div class="bar-fill"></div></div></div>`;
-  }).join('')+`<div class="axis" aria-hidden="true">${[0,.25,.5,.75,1].map(f=>`<span>${short(scale*f)}</span>`).join('')}</div>`;
+  $('chart').innerHTML=rows.map((reward,m)=>{
+   const values=result.map(s=>s.per10[m]);
+   const scale=scaleMax(Math.max(0,...values.filter(v=>v!==null)));
+   const bars=values.map((value,i)=>{
+    const width=value===null?0:value/scale*100;
+    return `<div class="group-bar" data-strategy="${i}" data-value="${value===null?'':value}" data-width="${width}" data-scale="${scale}" style="--color:${colors[i]};--width:${width}%" role="img" aria-label="${labels[i]}: ${fmt(value)} ${reward.name} per 10 stamina"><div class="group-track"><div class="bar-fill"></div></div><span class="group-value">${fmt(value)}</span></div>`;
+   }).join('');
+   return `<section class="reward-group" data-reward="${m}" aria-labelledby="reward-${m}"><h3 id="reward-${m}">${reward.name}</h3>${bars}<div class="group-axis" aria-hidden="true">${[0,.25,.5,.75,1].map(f=>`<span>${short(scale*f)}</span>`).join('')}</div></section>`;
+  }).join('');
   const headers=labels.map((label,i)=>`<th scope="col"><span class="col-dot" style="--color:${colors[i]}"></span>${label.replace(', then ','<br>')}</th>`).join('');
   $('results').innerHTML=`<thead><tr><th scope="col">Reward</th>${headers}</tr></thead><tbody>${rows.map((r,m)=>{
    const win=best(result.map(s=>s.per10[m]));
@@ -69,13 +71,12 @@ $('source-table').addEventListener('input',e=>{
 });
 $('edit').addEventListener('click',()=>{editing=!editing;buildSource();});
 $('reset').addEventListener('click',reset);
-$('n').addEventListener('input',render);$('metric').addEventListener('input',render);
+$('n').addEventListener('input',render);
 try{
  const response=await fetch('../sources/gold-zombie-rewards.csv');
  if(!response.ok)throw new Error('Could not load source data. Please reload.');
  source=parseRewards(await response.text());
  if(source.length!==6)throw new Error('Source data is incomplete.');
- $('metric').innerHTML=source.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('');
- for(const id of ['metric','n','edit','reset'])$(id).disabled=false;
+ for(const id of ['n','edit','reset'])$(id).disabled=false;
  reset();
 }catch(e){$('error').textContent=e.message;$('error').hidden=false;$('chart').innerHTML='';}

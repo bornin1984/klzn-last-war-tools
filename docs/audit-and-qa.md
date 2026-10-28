@@ -37,3 +37,9 @@ GitHub Pages is built, public and HTTPS-enforced at https://bornin1984.github.io
 User feedback supersedes the previous presentation: remove prose sections and cards; use a single compact Graph / Data table interface. Shared5–10 slider defaults10. Graph shows three horizontal bars for a selected reward; table tab shows the same six-reward comparison plus editable source/stamina values. Long documentation remains in README; evidence links are tucked into the table footer. Both55/40 presets and all source artifacts are retained.
 
 Verification:25 unchanged model tests and267 browser checks pass across375/768/1280 widths. Browser assertions cover all6 metrics ×6 rates ×2 presets, source cells, correct bar proportions, shared slider updating table, keyboard tabs, editing/reset, blank-cell validation and phone viewport containment. Graph fits the900px-high phone test viewport without scrolling. Desktop/mobile screenshots inspected. Independent reviewer found no important functional or mathematical defects.
+
+## All rewards in one graph — 2026-10-28
+
+Replaced the reward dropdown with six vertically stacked groups of horizontal bars, matching the chat preview approved by the user. Shared three-color legend; each reward has an independent labeled zero-based scale and exact value labels. One slider updates all18 bars and the data table. Level55 source data, math, editing, tabs and portrait rotation cue are unchanged.
+
+Verification:25 model tests pass.54 browser checks cover all18 bars at every rate5–10 across375/768/1280 widths, bar proportionality, source and comparison table values, tabs, edits and reset.
