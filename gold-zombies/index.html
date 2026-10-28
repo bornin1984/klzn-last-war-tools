@@ -15,7 +15,7 @@
     <div class="title-row"><h1>Gold Zombie Calculator</h1><label class="level-control">Boss level <select id="level" disabled><option>Loading…</option></select></label></div>
     <div class="calculator">
       <div class="discovery-control"><div class="slider-heading"><label for="n">Zombies hunted per discovered boss</label><output id="nLabel" for="n">20</output></div><input id="n" type="range" min="5" max="25" step="1" value="20" disabled><div class="ticks" aria-hidden="true"><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span></div></div>
-      <div class="budget-control"><label for="budget">Starting stamina</label><input id="budget" type="number" min="0" max="1000000000000" step="1" value="220" required disabled><span>refunds reused</span></div>
+      <div class="budget-control"><label for="budget">Starting stamina</label><input id="budget" type="number" inputmode="numeric" min="0" max="1000000000000" step="1" value="220" required disabled><span>refunds reused</span></div>
       <div class="tab-list" role="tablist" aria-label="Calculator view"><button id="graph-tab" role="tab" aria-selected="true" aria-controls="graph-panel" tabindex="0">Graph</button><button id="source-tab" role="tab" aria-selected="false" aria-controls="source-panel" tabindex="-1">Data table</button></div>
       <p id="error" role="alert" hidden></p>
       <p id="level-warning" class="scenario-note" role="status" hidden></p>
