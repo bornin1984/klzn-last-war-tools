@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {simulate,parseRewards,defaults} from '../gold-zombies/model.mjs';
 const base=(process.env.BASE_URL||'http://127.0.0.1:8000').replace(/\/$/,'');
-const datasets={55:parseRewards(readFileSync(new URL('../sources/gold-zombie-rewards.csv',import.meta.url),'utf8')),70:parseRewards(readFileSync(new URL('../sources/gold-zombie-level-70.csv',import.meta.url),'utf8'))};
+const manifestData=JSON.parse(readFileSync(new URL('../sources/gold-zombie-levels.json',import.meta.url),'utf8'));
+const datasets=Object.fromEntries(manifestData.levels.map(level=>[level.id,parseRewards(readFileSync(new URL('../sources/'+level.csv,import.meta.url),'utf8'))]));
 const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
 let checks=0;
 try{
@@ -12,7 +13,7 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(`${base}/gold-zombies/`);await page.locator('#chart [data-strategy]').first().waitFor();
   assert.equal(await page.locator('#n').inputValue(),'20');assert.equal(await page.locator('#budget').inputValue(),'220');
-  for(const level of ['55','70']){
+  for(const level of Object.keys(datasets)){
    await page.selectOption('#level',level);
    for(const n of [5,10,20,25])for(const stamina of [10,120,220]){
     await page.locator('#n').fill(String(n));await page.locator('#n').dispatchEvent('input');await page.locator('#budget').fill(String(stamina));
@@ -56,11 +57,11 @@ try{
  await extraPage.route('**/test-level-99.csv',route=>route.fulfill({body:extraCSV,contentType:'text/csv'}));
  await extraPage.route('**/missing-test-level.csv',route=>route.fulfill({status:404,body:'not found'}));
  await extraPage.goto(`${base}/gold-zombies/`);await extraPage.locator('#chart [data-strategy]').first().waitFor();
- assert.equal(await extraPage.locator('#level option').count(),3);assert.equal(await extraPage.locator('#level-warning').isVisible(),true);checks++;
+ assert.equal(await extraPage.locator('#level option').count(),manifest.levels.length-1);assert.equal(await extraPage.locator('#level-warning').isVisible(),true);checks++;
  await extraPage.selectOption('#level','99');await extraPage.locator('#n').fill('10');await extraPage.locator('#n').dispatchEvent('input');await extraPage.locator('#budget').fill('120');
  assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),533);
  assert.equal(await extraPage.locator('#source-table input').count(),0);checks++;
  await extraPage.selectOption('#level','55');assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),500);checks++;
  await extraPage.close();
- console.log(`PASS: ${checks} browser checks; whole-action totals, 55/70, 5–25 discovery, balances, ledger pagination, edits, tabs and mobile layout.`);
+ console.log(`PASS: ${checks} browser checks; whole-action totals, all registered levels, 5–25 discovery, balances, ledger pagination, edits, tabs and mobile layout.`);
 }finally{await browser.close();}

@@ -6,9 +6,37 @@
       "label": "55",
       "csv": "gold-zombie-rewards.csv",
       "evidence": [
-        {"label": "Level 55 leader rewards 1", "file": "boss-level-55-2026-10-16-loot-1.jpg"},
-        {"label": "Level 55 leader rewards 2", "file": "boss-level-55-2026-10-16-loot-2.jpg"},
-        {"label": "Level 55 discovery rewards", "file": "boss-level-55-intel.jpg"}
+        {
+          "label": "Level 55 leader rewards 1",
+          "file": "boss-level-55-2026-10-16-loot-1.jpg"
+        },
+        {
+          "label": "Level 55 leader rewards 2",
+          "file": "boss-level-55-2026-10-16-loot-2.jpg"
+        },
+        {
+          "label": "Level 55 discovery rewards",
+          "file": "boss-level-55-intel.jpg"
+        }
+      ]
+    },
+    {
+      "id": "65",
+      "label": "65",
+      "csv": "gold-zombie-level-65.csv",
+      "evidence": [
+        {
+          "label": "Level 65 discovery rewards",
+          "file": "boss-level-65-intel.jpg"
+        },
+        {
+          "label": "Level 65 leader rewards 1",
+          "file": "boss-level-65-leader-1.jpg"
+        },
+        {
+          "label": "Level 65 leader rewards 2",
+          "file": "boss-level-65-leader-2.jpg"
+        }
       ]
     },
     {
@@ -16,9 +44,18 @@
       "label": "70",
       "csv": "gold-zombie-level-70.csv",
       "evidence": [
-        {"label": "Level 70 rewards 1", "file": "boss-level-70-screen-1.jpg"},
-        {"label": "Level 70 rewards 2", "file": "boss-level-70-screen-2.jpg"},
-        {"label": "Level 70 rewards 3", "file": "boss-level-70-screen-3.jpg"}
+        {
+          "label": "Level 70 rewards 1",
+          "file": "boss-level-70-screen-1.jpg"
+        },
+        {
+          "label": "Level 70 rewards 2",
+          "file": "boss-level-70-screen-2.jpg"
+        },
+        {
+          "label": "Level 70 rewards 3",
+          "file": "boss-level-70-screen-3.jpg"
+        }
       ]
     }
   ]

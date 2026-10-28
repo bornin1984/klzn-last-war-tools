@@ -124,3 +124,7 @@ Structure: homepage directory; shared directory CSS in `assets/`; calculator UI/
 GitHub Pages publishes **main / (root)**; `.nojekyll` avoids unnecessary processing. `.github/workflows/qa.yml` runs checks. No runtime packages or backend are needed; Playwright is development-only.
 
 Rotation icon: [Lucide smartphone](https://github.com/lucide-icons/lucide/blob/main/icons/smartphone.svg), [ISC license](assets/licenses/lucide.txt), self-hosted with CSS animation.
+
+### Verified level65
+
+[CSV](sources/gold-zombie-level-65.csv), [intel screenshot](sources/boss-level-65-intel.jpg), leader screenshots [left](sources/boss-level-65-leader-1.jpg) / [right](sources/boss-level-65-leader-2.jpg). Leader/discoverer medals80/320; both payouts show1,800 drone data,3,000,000 XP,903,000 iron,903,000 bread,1,100,000 gold. Intel returns two10-stamina items. Hunt rewards and leading cost are unchanged. Added by catalog entry and CSV only; default boss remains55.
