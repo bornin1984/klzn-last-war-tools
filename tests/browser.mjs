@@ -59,7 +59,7 @@ try{
  assert.equal(await extraPage.locator('#level option').count(),3);assert.equal(await extraPage.locator('#level-warning').isVisible(),true);checks++;
  await extraPage.selectOption('#level','99');await extraPage.locator('#n').fill('10');await extraPage.locator('#n').dispatchEvent('input');await extraPage.locator('#budget').fill('120');
  assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),533);
- assert.match(await extraPage.locator('#csv').getAttribute('href'),/test-level-99/);checks++;
+ assert.equal(await extraPage.locator('#source-table input').count(),0);checks++;
  await extraPage.selectOption('#level','55');assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),500);checks++;
  await extraPage.close();
  console.log(`PASS: ${checks} browser checks; whole-action totals, 55/70, 5–25 discovery, balances, ledger pagination, edits, tabs and mobile layout.`);

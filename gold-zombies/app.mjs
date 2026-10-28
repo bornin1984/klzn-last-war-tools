@@ -93,7 +93,6 @@ $('n').addEventListener('input',render);
 $('budget').addEventListener('input',render);
 function chooseLevel(){
  const level=datasets[$('level').value];source=level.rows;
- $('csv').href='../sources/'+level.csv;
  $('level-evidence').replaceChildren(...level.evidence.map(e=>{const a=document.createElement('a');a.href='../sources/'+e.file;a.textContent=e.label;return a;}));
  reset();
 }
