@@ -21,6 +21,25 @@
       ]
     },
     {
+      "id": "60",
+      "label": "60",
+      "csv": "gold-zombie-level-60.csv",
+      "evidence": [
+        {
+          "label": "Level 60 discovery rewards",
+          "file": "boss-level-60-intel.jpg"
+        },
+        {
+          "label": "Level 60 leader rewards 1",
+          "file": "boss-level-60-leader-1.jpg"
+        },
+        {
+          "label": "Level 60 leader rewards 2",
+          "file": "boss-level-60-leader-2.jpg"
+        }
+      ]
+    },
+    {
       "id": "65",
       "label": "65",
       "csv": "gold-zombie-level-65.csv",

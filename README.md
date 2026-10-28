@@ -128,3 +128,7 @@ Rotation icon: [Lucide smartphone](https://github.com/lucide-icons/lucide/blob/m
 ### Verified level65
 
 [CSV](sources/gold-zombie-level-65.csv), [intel screenshot](sources/boss-level-65-intel.jpg), leader screenshots [left](sources/boss-level-65-leader-1.jpg) / [right](sources/boss-level-65-leader-2.jpg). Leader/discoverer medals80/320; both payouts show1,800 drone data,3,000,000 XP,903,000 iron,903,000 bread,1,100,000 gold. Intel returns two10-stamina items. Hunt rewards and leading cost are unchanged. Added by catalog entry and CSV only; default boss remains55.
+
+### Verified level60
+
+[CSV](sources/gold-zombie-level-60.csv), [intel](sources/boss-level-60-intel.jpg), leading screenshots [left](sources/boss-level-60-leader-1.jpg) / [right](sources/boss-level-60-leader-2.jpg). Leader/discoverer medals80/310; both payouts:1,700 drone data,2,900,000 XP,864,000 iron,864,000 bread,1,100,000 gold. Intel returns two10-stamina items. Hunt rewards and leading cost remain unchanged. Added through data/catalog only; default remains55.
