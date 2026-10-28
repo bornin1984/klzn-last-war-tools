@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {loadLevels} from '../gold-zombies/levels.mjs';
+const csv=readFileSync(new URL('../sources/gold-zombie-rewards.csv',import.meta.url),'utf8');
+const entry=id=>({id,label:id,csv:`level-${id}.csv`});
+const fetcher=(manifest,files={})=>async url=>url.endsWith('.json')?{ok:true,json:async()=>manifest}:Object.hasOwn(files,url.split('/').at(-1))?{ok:true,text:async()=>files[url.split('/').at(-1)]}:{ok:false};
+test('new levels require only data entries, no code',async()=>{const r=await loadLevels(fetcher({defaultLevel:'99',levels:[entry('55'),entry('99')]},{'level-55.csv':csv,'level-99.csv':csv}));assert.deepEqual(r.levels.map(l=>l.id),['55','99']);assert.equal(r.defaultLevel,'99');assert.equal(r.levels[1].rows[0].discovery,300);});
+test('bad CSV or missing file cannot disable a valid level',async()=>{for(const bad of [csv.replace('1300','oops'),csv.replace('Courage medals,10,80,300','Courage medals,,80,300'),csv.split('\n').slice(0,4).join('\n'),csv.replace('Drone data','Courage medals')]){const r=await loadLevels(fetcher({defaultLevel:'70',levels:[entry('55'),entry('70'),entry('90')]},{'level-55.csv':csv,'level-70.csv':bad}));assert.deepEqual(r.levels.map(l=>l.id),['55']);assert.equal(r.defaultLevel,'55');assert.equal(r.errors.length,2);}});
+test('reordered reward rows are normalized; zero is a valid reward',async()=>{const lines=csv.trim().split('\n');const reordered=[lines[0],...lines.slice(1).reverse()].join('\n').replace('Courage medals,10,80,300','Courage medals,0,80,300');const r=await loadLevels(fetcher({levels:[entry('80')]},{'level-80.csv':reordered}));assert.equal(r.levels[0].rows[0].name,'Courage medals');assert.equal(r.levels[0].rows[0].hunt,0);});
+test('registry mistakes are isolated; no working levels gives clear failure',async()=>{const r=await loadLevels(fetcher({levels:[entry('55'),entry('55'),{id:'70',csv:'../bad.csv'}]},{'level-55.csv':csv}));assert.equal(r.levels.length,1);assert.equal(r.errors.length,2);await assert.rejects(()=>loadLevels(fetcher({levels:[entry('70')]})),/No valid/);});
+test('every published registry entry loads and validates',async()=>{const fetchFile=async url=>{const text=readFileSync(new URL('../sources/'+url.split('/').at(-1),import.meta.url),'utf8');return {ok:true,json:async()=>JSON.parse(text),text:async()=>text};};const r=await loadLevels(fetchFile);assert.equal(r.errors.length,0);assert.ok(r.levels.length>=2);});

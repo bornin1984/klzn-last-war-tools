@@ -96,6 +96,29 @@ Serve with `python3 -m http.server 8000`, then open http://localhost:8000/. Do n
 
 Simulation tests cover504 independent-reference scenarios (both levels, every N5–25,12 starting balances), hand-worked examples, edited costs, accounting/ledger invariants, unsafe/free/self-funding inputs and huge lazy ledger pages. Browser checks cover both levels, representative discovery boundaries, budgets, graph/table agreement, pending bosses, ledger pagination, edits/reset, zero/invalid input, keyboard tabs and mobile layouts. Browser emulation is not physical-device certification.
 
+### Adding a boss level (data only)
+
+1. Copy an existing reward CSV into `sources/gold-zombie-level-80.csv` (80 is an example, not verified data). Replace the leader/discoverer values with verified rewards and confirm the hunt values. Keep six reward rows. The third column may be named `boss_rally` or `level_80_boss_rally`.
+2. Add one entry to the `levels` array in [sources/gold-zombie-levels.json](sources/gold-zombie-levels.json):
+
+```json
+{
+  "id": "80",
+  "label": "80",
+  "csv": "gold-zombie-level-80.csv",
+  "evidence": [
+    {"label": "Level 80 rewards", "file": "boss-level-80.jpg"}
+  ]
+}
+```
+
+3. Save the source screenshots alongside the CSV. Evidence is optional in the loader, but preserve it for review. Filenames are local to `sources/`; no directory prefix is needed. Change `defaultLevel` only if a different initial selection is desired.
+4. Run `npm test` and `npm run test:browser` against a local server, then publish normally.
+
+No calculator JavaScript, HTML dropdown, formulas, or switch statements need editing. The level selector, source download and evidence links are generated from the catalog. Stamina costs/refund continue using the shared editable defaults.
+
+Validation requires six unique known reward names, four expected columns, and nonnegative whole reward values up to1trillion. Reward rows may be reordered. Missing fields, duplicates, bad numbers and unavailable CSVs exclude only the broken level; other levels keep working. If the configured default is unavailable, the first valid level becomes the default. If no levels are usable, the site displays a clear error. The tests validate every published entry and demonstrate a synthetic new level without changing application code.
+
 Structure: homepage directory; shared directory CSS in `assets/`; calculator UI/model in `gold-zombies/`; evidence and CSVs in `sources/`; tests in `tests/`. The model is independent of the DOM. Never replace original evidence with corrected data. Add another tool in its own directory and link it from the homepage. Keep relative URLs for the GitHub project prefix, and retain versioned script/style URLs when deploying changed interfaces.
 
 GitHub Pages publishes **main / (root)**; `.nojekyll` avoids unnecessary processing. `.github/workflows/qa.yml` runs checks. No runtime packages or backend are needed; Playwright is development-only.

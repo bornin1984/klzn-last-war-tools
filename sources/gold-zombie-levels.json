@@ -1,0 +1,25 @@
+{
+  "defaultLevel": "55",
+  "levels": [
+    {
+      "id": "55",
+      "label": "55",
+      "csv": "gold-zombie-rewards.csv",
+      "evidence": [
+        {"label": "Level 55 leader rewards 1", "file": "boss-level-55-2026-10-16-loot-1.jpg"},
+        {"label": "Level 55 leader rewards 2", "file": "boss-level-55-2026-10-16-loot-2.jpg"},
+        {"label": "Level 55 discovery rewards", "file": "boss-level-55-intel.jpg"}
+      ]
+    },
+    {
+      "id": "70",
+      "label": "70",
+      "csv": "gold-zombie-level-70.csv",
+      "evidence": [
+        {"label": "Level 70 rewards 1", "file": "boss-level-70-screen-1.jpg"},
+        {"label": "Level 70 rewards 2", "file": "boss-level-70-screen-2.jpg"},
+        {"label": "Level 70 rewards 3", "file": "boss-level-70-screen-3.jpg"}
+      ]
+    }
+  ]
+}

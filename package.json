@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/model.test.mjs && node tests/simulation.test.mjs",
+    "test": "node tests/model.test.mjs && node tests/simulation.test.mjs && node tests/levels.test.mjs",
     "test:browser": "node tests/browser.mjs"
   },
   "devDependencies": {

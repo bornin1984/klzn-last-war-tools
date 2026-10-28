@@ -1,4 +1,5 @@
-import {defaults,parseRewards,simulate} from './model.mjs?v=whole-actions-1';
+import {loadLevels} from './levels.mjs?v=1';
+import {defaults,simulate} from './model.mjs?v=whole-actions-1';
 const $=id=>document.getElementById(id);
 const labels=['Hunt, then rally your own','Hunt, then someone else rallies','Leading rallies only'];
 const colors=['#e98b70','#31ad9a','#7b7ce0'];
@@ -90,18 +91,19 @@ $('edit').addEventListener('click',()=>{editing=!editing;buildSource();});
 $('reset').addEventListener('click',reset);
 $('n').addEventListener('input',render);
 $('budget').addEventListener('input',render);
-$('level').addEventListener('change',()=>{
- source=datasets[$('level').value];
- $('csv').href=$('level').value==='55'?'../sources/gold-zombie-rewards.csv':'../sources/gold-zombie-level-70.csv';
+function chooseLevel(){
+ const level=datasets[$('level').value];source=level.rows;
+ $('csv').href='../sources/'+level.csv;
+ $('level-evidence').replaceChildren(...level.evidence.map(e=>{const a=document.createElement('a');a.href='../sources/'+e.file;a.textContent=e.label;return a;}));
  reset();
-});
+}
+$('level').addEventListener('change',chooseLevel);
 try{
- const paths=['../sources/gold-zombie-rewards.csv','../sources/gold-zombie-level-70.csv'];
- const data=await Promise.all(paths.map(async path=>{
-  const response=await fetch(path);if(!response.ok)throw new Error('Could not load source data. Please reload.');
-  const rows=parseRewards(await response.text());if(rows.length!==6)throw new Error('Source data is incomplete.');return rows;
- }));
- datasets={'55':data[0],'70':data[1]};source=datasets['55'];
+ const catalog=await loadLevels();
+ datasets=Object.fromEntries(catalog.levels.map(level=>[level.id,level]));
+ $('level').replaceChildren(...catalog.levels.map(level=>new Option(level.label,level.id)));
+ $('level').value=catalog.defaultLevel;
+ if(catalog.errors.length){$('level-warning').textContent='Some level data could not be loaded. Available levels still work.';$('level-warning').hidden=false;console.warn(catalog.errors.join('; '));}
  for(const id of ['n','budget','level','edit','reset'])$(id).disabled=false;
- reset();
+ chooseLevel();
 }catch(e){$('error').textContent=e.message;$('error').hidden=false;$('chart').innerHTML='';}

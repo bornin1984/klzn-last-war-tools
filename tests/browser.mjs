@@ -48,5 +48,19 @@ try{
   if(width===375){await page.getByRole('tab',{name:'Data table',exact:true}).click();assert.equal(await page.locator('.rotate-hint').isVisible(),true);await page.setViewportSize({width:900,height:375});assert.equal(await page.locator('.rotate-hint').isHidden(),true);checks++;}
   await page.close();
  }
+ const extraPage=await browser.newPage();
+ const manifest=JSON.parse(readFileSync(new URL('../sources/gold-zombie-levels.json',import.meta.url),'utf8'));
+ manifest.levels.push({id:'99',label:'99',csv:'test-level-99.csv'},{id:'100',csv:'missing-test-level.csv'});
+ const extraCSV=readFileSync(new URL('../sources/gold-zombie-rewards.csv',import.meta.url),'utf8').replace('level_55_boss_rally','level_99_boss_rally').replace('Courage medals,10,80,300','Courage medals,10,80,333');
+ await extraPage.route('**/gold-zombie-levels.json',route=>route.fulfill({json:manifest}));
+ await extraPage.route('**/test-level-99.csv',route=>route.fulfill({body:extraCSV,contentType:'text/csv'}));
+ await extraPage.route('**/missing-test-level.csv',route=>route.fulfill({status:404,body:'not found'}));
+ await extraPage.goto(`${base}/gold-zombies/`);await extraPage.locator('#chart [data-strategy]').first().waitFor();
+ assert.equal(await extraPage.locator('#level option').count(),3);assert.equal(await extraPage.locator('#level-warning').isVisible(),true);checks++;
+ await extraPage.selectOption('#level','99');await extraPage.locator('#budget').fill('120');
+ assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),533);
+ assert.match(await extraPage.locator('#csv').getAttribute('href'),/test-level-99/);checks++;
+ await extraPage.selectOption('#level','55');assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),500);checks++;
+ await extraPage.close();
  console.log(`PASS: ${checks} browser checks; whole-action totals, 55/70, 5–25 discovery, balances, ledger pagination, edits, tabs and mobile layout.`);
 }finally{await browser.close();}
