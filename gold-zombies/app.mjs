@@ -1,9 +1,10 @@
-import {defaults,parseRewards,calculate,forStamina} from './model.mjs?v=budget-levels-1';
+import {defaults,parseRewards,simulate} from './model.mjs?v=whole-actions-1';
 const $=id=>document.getElementById(id);
 const labels=['Hunt, then rally your own','Hunt, then someone else rallies','Leading rallies only'];
 const colors=['#e98b70','#31ad9a','#7b7ce0'];
 const fmt=v=>v===null?'N/A':v.toLocaleString('en-US',{maximumFractionDigits:1});
 const short=v=>Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(v);
+let currentResults=[],ledgerPage=0;
 let datasets,source,rows,costs={...defaults},editing=false,activeTab='graph';
 const best=values=>{const valid=values.filter(v=>v!==null),max=valid.length?Math.max(...valid):null;return values.map(v=>v!==null&&Math.abs(v-max)<=Math.abs(max)*1e-10);};
 function showTab(tab,focus=false){
@@ -35,7 +36,8 @@ function render(){
  if(!rows)return;
  try{
   const n=$('n').valueAsNumber,budget=$('budget').valueAsNumber;
-  const result=forStamina(calculate(n,costs,rows),budget);
+  const result=simulate(n,budget,costs,rows);
+  currentResults=result;ledgerPage=0;
   document.querySelectorAll('[data-budget-label]').forEach(el=>el.textContent=fmt(budget));
   $('nLabel').value=fmt(n);$('error').hidden=true;
   $('chart').innerHTML=rows.map((reward,m)=>{
@@ -43,7 +45,7 @@ function render(){
    const scale=scaleMax(Math.max(0,...values.filter(v=>v!==null)));
    const bars=values.map((value,i)=>{
     const width=value===null?0:value/scale*100;
-    return `<div class="group-bar" data-strategy="${i}" data-value="${value===null?'':value}" data-width="${width}" data-scale="${scale}" style="--color:${colors[i]};--width:${width}%" role="img" aria-label="${labels[i]}: ${fmt(value)} ${reward.name} per ${fmt(budget)} net stamina"><div class="group-track"><div class="bar-fill"></div></div><span class="group-value">${fmt(value)}</span></div>`;
+    return `<div class="group-bar" data-strategy="${i}" data-value="${value===null?'':value}" data-width="${width}" data-scale="${scale}" style="--color:${colors[i]};--width:${width}%" role="img" aria-label="${labels[i]}: ${fmt(value)} ${reward.name} from ${fmt(budget)} starting stamina"><div class="group-track"><div class="bar-fill"></div></div><span class="group-value">${fmt(value)}</span></div>`;
    }).join('');
    return `<section class="reward-group" data-reward="${m}" aria-labelledby="reward-${m}"><h3 id="reward-${m}">${reward.name}</h3>${bars}<div class="group-axis" aria-hidden="true">${[0,.25,.5,.75,1].map(f=>`<span>${short(scale*f)}</span>`).join('')}</div></section>`;
   }).join('');
@@ -52,12 +54,26 @@ function render(){
    const win=best(result.map(s=>s.rewards[m]));
    return `<tr><th scope="row">${r.name}</th>${result.map((s,i)=>`<td data-value="${s.rewards[m]===null?'':s.rewards[m]}" class="${win[i]?'best':''}">${fmt(s.rewards[m])}</td>`).join('')}</tr>`;
   }).join('')}</tbody>`;
- }catch(e){$('error').textContent=e.message.startsWith('Enter a stamina')?e.message:'Enter a valid, nonnegative number in each edited cell.';$('error').hidden=false;$('chart').innerHTML='';$('results').innerHTML='';}
+  const stats=[['Hunts','hunts'],['Rallies you lead','rallies'],['Discoveries','discoveries'],['Discovered bosses defeated','resolved'],['Unresolved bosses','unresolved'],['Gross stamina spent','spent'],['Stamina returned','returned'],['Stamina remaining','remaining']];
+  $('summary').innerHTML=`<thead><tr><th scope="col">Calculation</th>${headers}</tr></thead><tbody>${stats.map(([title,key])=>`<tr><th scope="row">${title}</th>${result.map(s=>`<td data-field="${key}">${fmt(s[key])}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  renderLedger();
+ }catch(e){$('error').textContent=e.message;$('error').hidden=false;currentResults=[];for(const id of ['chart','results','summary','ledger'])$(id).innerHTML='';$('ledger-status').textContent='';$('ledger-prev').disabled=true;$('ledger-next').disabled=true;}
+
 }
+function renderLedger(){
+ const s=currentResults[+$('ledger-strategy').value];if(!s)return;
+ const entries=s.ledger(ledgerPage);
+ $('ledger').innerHTML=`<thead><tr>${['Step','Action','Spent','Returned','Balance',...rows.map(r=>r.name+' total')].map(t=>`<th scope="col">${t}</th>`).join('')}</tr></thead><tbody>${entries.map(e=>`<tr><th scope="row">${e.step}</th><td>${e.action}</td><td>${fmt(e.spent)}</td><td>${fmt(e.returned)}</td><td data-balance="${e.balance}">${fmt(e.balance)}</td>${e.rewards.map(v=>`<td>${fmt(v)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+ $('ledger-status').textContent=s.eventCount?`Actions ${ledgerPage*50+1}–${ledgerPage*50+entries.length} of ${fmt(s.eventCount)}`:'No affordable actions';
+ $('ledger-prev').disabled=ledgerPage===0;$('ledger-next').disabled=(ledgerPage+1)*50>=s.eventCount;
+}
+$('ledger-strategy').addEventListener('change',()=>{ledgerPage=0;renderLedger();});
+$('ledger-prev').addEventListener('click',()=>{if(ledgerPage>0){ledgerPage--;renderLedger();}});
+$('ledger-next').addEventListener('click',()=>{const s=currentResults[+$('ledger-strategy').value];if(s&&(ledgerPage+1)*50<s.eventCount){ledgerPage++;renderLedger();}});
 function buildSource(){
  const keys=['hunt','boss','discovery','join'];
  function cell(value,{row,key,cost}={}){
-  const field=editing&&(key||cost)?`<input type="number" min="0" max="1000000000000" step="any" required value="${value}" ${cost?`data-cost="${cost}"`:`data-row="${row}" data-key="${key}"`} aria-label="${cost?{hunt:'Stamina per hunt',own:'Stamina per own rally',join:'Stamina per other rally',credit:'Discovery stamina returned'}[cost]:rows[row].name+' '+{hunt:'per hunt',boss:'per own rally',discovery:'per discovery',join:'per other rally'}[key]}">`:fmt(value);
+  const field=editing&&(key||cost)?`<input type="number" min="0" max="1000000000000" step="1" required value="${value}" ${cost?`data-cost="${cost}"`:`data-row="${row}" data-key="${key}"`} aria-label="${cost?{hunt:'Stamina per hunt',own:'Stamina per own rally',join:'Stamina per other rally',credit:'Discovery stamina returned'}[cost]:rows[row].name+' '+{hunt:'per hunt',boss:'per own rally',discovery:'per discovery',join:'per other rally'}[key]}">`:fmt(value);
   return `<td data-value="${value}">${field}</td>`;
  }
  $('source-table').innerHTML=`<thead><tr><th scope="col">Reward</th><th scope="col">Each hunt</th><th scope="col">Own rally</th><th scope="col">Discovery</th><th scope="col">Others’ rally</th></tr></thead><tbody>${rows.map((r,i)=>`<tr data-row="${i}"><th scope="row">${r.name}</th>${keys.map(key=>cell(r[key],{row:i,key})).join('')}</tr>`).join('')}<tr class="source-table-costs"><th scope="row">Stamina spent</th>${cell(costs.hunt,{cost:'hunt'})}${cell(costs.own,{cost:'own'})}${cell(0)}${cell(costs.join,{cost:'join'})}</tr><tr class="source-table-costs"><th scope="row">Stamina returned</th>${cell(0)}${cell(0)}${cell(costs.credit,{cost:'credit'})}${cell(0)}</tr></tbody>`;

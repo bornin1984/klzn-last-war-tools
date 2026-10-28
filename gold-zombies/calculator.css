@@ -31,3 +31,10 @@
 .level-control select{min-height:36px}
 .group-value{overflow-wrap:anywhere}
 @media(max-width:560px){.budget-control{padding:12px 18px;gap:8px;font-size:11px}.budget-control input{width:78px}.level-control{flex-direction:column;align-items:flex-end;gap:4px;font-size:10px}.level-control select{min-height:32px;padding:4px 24px 4px 10px}}
+
+.scenario-note{font-size:11px;color:var(--muted);padding:12px 32px 0;margin:0}
+.work-heading{margin-top:28px}
+.ledger-note{font-size:11px;color:var(--muted);margin:12px 0 0}
+.ledger-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;font-size:11px;color:var(--muted)}
+.ledger-controls button{min-height:32px;font-size:11px}
+@media(max-width:560px){.scenario-note{padding:12px 18px 0}.source-heading select{max-width:100%;font-size:11px}.budget-control{flex-wrap:wrap}#ledger-strategy{width:100%}}

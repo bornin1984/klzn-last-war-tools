@@ -1,171 +1,103 @@
 # KLZN Last War Tools
 
-Public, mobile-first strategy calculators for **Last War: Survival**. Static HTML, CSS and JavaScript; no backend, accounts, runtime packages or build step. Independent community project, not affiliated with the publisher.
+Static community calculators for Last War: Survival. No backend or login. Not affiliated with the publisher.
 
-**Live directory:** https://bornin1984.github.io/klzn-last-war-tools/
+- [Tools directory](https://bornin1984.github.io/klzn-last-war-tools/)
+- [Gold Zombie calculator](https://bornin1984.github.io/klzn-last-war-tools/gold-zombies/)
 
-**Gold Zombie calculator:** https://bornin1984.github.io/klzn-last-war-tools/gold-zombies/
+## Starting-stamina calculator
 
-The calculator has two tabs: **Graph** (all six rewards stacked vertically, each with three horizontal strategy bars) and **Data table** (all reward comparisons and editable source data). A shared **5–10 hunts** slider defaults to **10** and updates both views. The **net stamina amount** is editable (default10); all18 bars and comparison-table values scale together. Choose boss level55 or70, with55 the default. Switching levels resets source edits but preserves the hunt rate and stamina amount. Source screenshots and formulas are linked from the table tab rather than displayed as prose on the main view.
+Enter **starting stamina**, choose **5–25 hunts per discovery** (default10), and choose boss level55 or70 (default55). Starting stamina defaults10. The graph shows total rewards for whole affordable actions, not proportional rewards per10 stamina. Discovery refunds are reused automatically.
 
-## Gold Zombie strategies
+The discovery setting is a deterministic scenario: one boss every N hunts, starting with no existing discovery progress. Actual drops are random. All kills are assumed successful, discovered bosses led by others are assumed defeated immediately, stamina items are claimed and redeemed immediately, and suitable bosses to lead remain available. Time, troop losses, reward caps, random loot and free joining are excluded.
 
-1. **Hunt + own rally:** hunt until you discover a boss, lead its successful rally, claim both leader and discoverer rewards.
-2. **Hunt + others rally:** hunt until discovery; someone else leads and defeats that boss. Claim discoverer rewards; no leader or participant loot is counted for you.
-3. **Rally others only:** **lead** rallies against bosses other players discovered. Earn leader rewards; you receive neither their discovery reward nor their stamina items.
+### Strategies
 
-**Leading is different from joining.** Community guides describe joining someone else's rally as free with reduced rewards. Free participant loot is outside this three-strategy model; finite rewards per stamina cannot be defined for an action costing zero stamina. Players can combine free joins with hunting. “Others rally” assumes you don't join your discovered boss; no participant rewards are added.
+1. **Hunt, then rally your own:** pay for each hunt. On discovery, prioritize leading your boss if affordable. Pay the leading cost before leader and discoverer rewards/refund arrive. If leading is unaffordable, spend any remaining affordable stamina hunting; leave the discovered boss unresolved without a payout.
+2. **Hunt, then someone else rallies:** pay for hunts. Every discovered boss is assumed defeated by someone else; receive discoverer rewards and returned stamina, without leader or free-participant rewards.
+3. **Leading rallies only:** lead affordable rallies against other players’ bosses. No hunt rewards, discoverer rewards or refunds. Leading is distinct from free joining.
 
-## Source evidence
+### Stamina accounting and rewards
 
-- [Original screenshot](sources/gold-zombie-original.jpg), preserved byte-for-byte from the user's attachment. Author, original date, server and version unknown. It contains five hunt rows, a level-40 boss row, discovery rewards and two derived comparisons.
-- [Original transcription](sources/gold-zombie-spreadsheet.csv): literal reward values from that image, including **168,000 hunt iron**. This remains separate from the corrected active data.
-- [In-game screenshot, August 5](sources/invading-zombie-august-5.jpg): user-supplied level-10 Invading Zombie screen, year unspecified. Directly shows 10 stamina, 10 medals, 1.3K drone data, 263K XP, 268K iron and 268K bread. Gold is outside the visible horizontal reward area, so this image does not independently verify gold. Potential rewards are excluded from this model.
-- [October 22, 2026 kill report, left view](sources/zombie-kill-2026-10-22-loot-1.jpg) and [right view](sources/zombie-kill-2026-10-22-loot-2.jpg): two horizontal loot views of the same battle report (ID 1430091843144044982). Together they directly confirm all six active hunt rewards, including 268K gold and iron. Extra chest loot is visible but is outside the six-resource comparison. Neither view establishes the discovery or boss reward. Original images are preserved unchanged.
-- [Default level 55 rewards](sources/gold-zombie-rewards.csv): directly evidenced hunt, leader and intel rewards from user screenshots. The user confirmed that expanded K/M values are exact. [Level 55 intel screenshot](sources/boss-level-55-intel.jpg) shows 300 discoverer medals and two 10-stamina items.
-- [Archived level 40 rewards](sources/gold-zombie-level-40.csv): original spreadsheet boss/discovery values with corrected hunt iron. Retained as historical evidence; not an option in the calculator.
-- [Cited mechanics research](sources/mechanics-research.md): detailed community guides, Reddit discussions, Google Play editorial and an official-site check, with evidence limits and conflicting source details.
+Let H be total hunts, R rallies you lead, D your discovered bosses successfully defeated, and S starting stamina:
 
-### Evidence status
+`remaining = S − H × huntCost − R × leadingCost + D × discoveryRefund`
 
-**Confirmed against the image:** all transcribed values, the 10-stamina hunt, 20-stamina boss rally, parenthesized `(20)` discovery entry, and arithmetic of its original totals.
+`reward = H × huntReward + R × leaderReward + D × discoveryReward`
 
-**User-confirmed gameplay and community corroboration:** the discovery reward genuinely includes **20 stamina**, paid as **two 10-stamina items after the boss is defeated and rewards claimed**. This is a real reward, not merely an accounting convention. It is subtracted once per discovery in long-run **net** stamina. Players still need upfront stamina; the model assumes the returned items are redeemed. The user's in-game check corrects hunt iron to 268,000.
+Own/other leader costs and rewards remain independently editable. Only resolved discoveries earn refunds. An unresolved boss earns neither leader nor discovery rewards.
 
-**User observation:** approximately ten Gold Zombies per discovered boss. The spreadsheet uses five. Neither is an official guaranteed drop rate. The slider allows 5–10 hunts in whole-number steps, defaulting to 10. The model also supports fractional rates.
+The graph and comparison table show the same six reward totals. The action summary shows hunts, rallies led, discoveries, resolved/unresolved bosses, gross spending, refunds and remaining stamina. Select a strategy in **Show the work** to inspect each action’s spending, refund, balance and cumulative rewards,50 rows per page. The source table remains editable. Switching levels resets source edits while preserving starting stamina and discovery setting. Portrait table views show a rotation cue; reduced-motion preferences are respected.
 
-**Community evidence, not publisher-certified numerical rules:** leading others' bosses costs twenty, joining is free, and the discoverer receives mail when others kill the boss. No detailed official numerical rulebook was located. Community guides disagree on participant loot fractions, which are not modeled.
+### Efficient calculation without fractional actions
 
-### Default source data: level 55
+`simulate()` in `gold-zombies/model.mjs` batches completed cycles and generates ledger rows on demand. It is checked against an independent one-action-at-a-time reference implementation.
 
-| Event | Stamina spent | Stamina returned | Courage medals | Drone data | Hero XP | Iron | Bread | Gold |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Gold Zombie kill | 10 | 0 | 10 | 1,300 | 263,000 | 268,000 | 268,000 | 268,000 |
-| Own boss rally led, level 55 | 20 | 0 | 80 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
-| Successful discovery, claimed | 0 | 20 | 300 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
-| Other boss rally led | 20 | 0 | 80 | 1,600 | 2,700,000 | 825,000 | 825,000 | 1,000,000 |
+For a hunting strategy, let N be hunts per discovery, A the upfront cost of one complete cycle (`N×huntCost + ownLeadingCost` for own rallies, `N×huntCost` for others), and C the discovery refund:
 
-Other-boss rewards initially copy the verified level 55 leader row. Cost and rewards are independently editable to accommodate different boss levels or mechanics. The CSV stores hunt, own boss and discovery rewards; the other boss defaults are explicitly inferred by the model.
+- Completed cycles: `q = 0` if `S < A`; otherwise `1 + floor((S − A)/(A − C))`.
+- Remaining stamina after completed cycles: `S − q×(A−C)`.
+- Additional hunts: `floor(remainingAfterCycles/huntCost)`.
+- Total hunts: `q×N + additionalHunts`.
+- Resolved discoveries: q; any additional discoveries remain unresolved.
+- Leading only: `floor(S/otherLeadingCost)` rallies, without refunds.
 
-### Additional level 55 evidence
+These are whole counts with the initial upfront affordability check. A discovery alone does not trigger the reward: boss defeat and claim are required. Lazy ledger rows reconstruct the actual hunt → lead → claim sequence and its intermediate balances.
 
-The user supplied [left](sources/boss-level-55-2026-10-16-loot-1.jpg) and [right](sources/boss-level-55-2026-10-16-loot-2.jpg) loot views of a **level 55 boss rally led on October 16, 2026, 16:44:55**. These show 80 medals, 1.6K drone data, 2.7M XP, 825.0K iron, 825.0K bread and 1.0M gold. [Separate displayed-value CSV](sources/gold-zombie-level-55-leader.csv) preserves the abbreviations; the user confirmed that expanded K/M values are accurate. Other item loot is outside the model.
+Inputs are whole nonnegative numbers up to1trillion; action costs must be positive. A refund at least as large as a discovery’s hunting cost is rejected because the others-lead strategy would recycle stamina indefinitely. Values that exceed JavaScript’s exact integer range are rejected instead of silently rounded. Zero starting stamina gives zero actions/rewards.
 
-The subsequently supplied [level 55 discovery/intel screen](sources/boss-level-55-intel.jpg) completes the cycle: **300 medals, two 10-stamina items, 1.6K data, 2.7M XP, 825K iron and bread, 1.0M gold**. It explicitly says the discovered level55 boss was eliminated. The calculator offers verified level55 and level70 data; level40 is archived in the repository. The user confirmed displayed 1.0M/2.7M as accurate values of 1,000,000/2,700,000.
+### Worked level55 examples
 
-### Verified level 70 data
+| Start | Hunts/discovery | Strategy | Hunts | Rallies led | Resolved discoveries | Medals | Remaining |
+|---:|---:|---|---:|---:|---:|---:|---:|
+| 10 | 20 | Leading only | 0 | 0 | 0 | 0 | 10 |
+| 10 | 20 | Hunt + own | 1 | 0 | 0 | 10 | 0 |
+| 120 | 10 | Hunt + own | 12 | 1 | 1 | 500 | 0 |
+| 120 | 10 | Hunt + others | 14 | 0 | 1 | 440 | 0 |
+| 120 | 10 | Leading only | 0 | 6 | 0 | 480 | 0 |
+| 210 | 20 | Hunt + own | 21 | 0 | 0 | 210 | 0 |
+| 220 | 20 | Hunt + own | 22 | 1 | 1 | 600 | 0 |
 
-[Level70 CSV](sources/gold-zombie-level-70.csv), transcribed from the user’s October28,2026 [screen1](sources/boss-level-70-screen-1.jpg), [screen2](sources/boss-level-70-screen-2.jpg) and [screen3](sources/boss-level-70-screen-3.jpg). Gold Zombie hunt rewards remain the previously verified values. Leading stamina remains20; discoverer mail explicitly shows two10-stamina items.
+The210-stamina own-rally example has one unresolved discovered boss. No refund is credited.
 
-| Reward | Lead level70 boss | Discoverer reward |
-|---|---:|---:|
-| Courage medals | 80 | 330 |
-| Drone data | 1,900 | 1,900 |
-| Hero XP | 3,100,000 | 3,100,000 |
-| Iron | 942,000 | 942,000 |
-| Bread | 942,000 | 942,000 |
-| Gold | 1,200,000 | 1,200,000 |
+## Source evidence and all defaults
 
-## Mathematical audit
+| Reward | Each hunt | Level55 leader | Level55 discovery | Level70 leader | Level70 discovery |
+|---|---:|---:|---:|---:|---:|
+| Courage medals | 10 | 80 | 300 | 80 | 330 |
+| Drone data | 1,300 | 1,600 | 1,600 | 1,900 | 1,900 |
+| Hero XP | 263,000 | 2,700,000 | 2,700,000 | 3,100,000 | 3,100,000 |
+| Iron | 268,000 | 825,000 | 825,000 | 942,000 | 942,000 |
+| Bread | 268,000 | 825,000 | 825,000 | 942,000 | 942,000 |
+| Gold | 268,000 | 1,000,000 | 1,000,000 | 1,200,000 | 1,200,000 |
 
-The prior formulas were algebraically consistent with the spreadsheet and its real refund; the initial uncertainty about that refund was resolved by the user and external community evidence. The screenshot's source iron value, rather than its transcription, required correction. The prior implementation also lacked percentage comparisons and cycle totals, silently converted invalid fields to zero, omitted chart y-axis values, produced invalid SVG points for nonpositive denominators, and gave no distinction between leading and free joining. Those are addressed.
+Costs: hunt10; own/other leading20; discovery returns20 as two10-stamina items. User confirmed expanded K/M values as accurate. Other-boss leading defaults copy the verified leader rewards; free-participant loot is not modeled.
 
-At five hunts, the original source totals reproduce exactly:
+- [Level55 CSV](sources/gold-zombie-rewards.csv), [level70 CSV](sources/gold-zombie-level-70.csv).
+- Actual hunt loot: [left](sources/zombie-kill-2026-10-22-loot-1.jpg), [right](sources/zombie-kill-2026-10-22-loot-2.jpg), dated October22,2026.
+- [August5 target screen](sources/invading-zombie-august-5.jpg), year unspecified; independently shows268K hunt iron. Gold is clipped in this image.
+- Level55 leading: [left](sources/boss-level-55-2026-10-16-loot-1.jpg), [right](sources/boss-level-55-2026-10-16-loot-2.jpg); [discovery/intel](sources/boss-level-55-intel.jpg).
+- Level70 evidence: [screen1](sources/boss-level-70-screen-1.jpg), [screen2](sources/boss-level-70-screen-2.jpg), [screen3](sources/boss-level-70-screen-3.jpg), supplied October28,2026.
+- [Original spreadsheet image](sources/gold-zombie-original.jpg) and [literal transcription](sources/gold-zombie-spreadsheet.csv). Its author/date are unknown. It contains168K hunt iron; later in-game evidence confirms268K. Original evidence is preserved unchanged.
+- [Archived corrected level40 data](sources/gold-zombie-level-40.csv), unavailable as a website option.
+- [Cited mechanics research](sources/mechanics-research.md): community guides, Reddit and an official-source check. No detailed publisher-certified numerical rulebook was found. User screenshots independently establish the55/70 rewards and real stamina items.
 
-| Strategy | Net stamina | Medals | Drone data | XP | Iron | Bread | Gold |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Hunt + own rally | 50 | 400 | 9,500 | 5,715,000 | 2,310,000 | 2,810,000 | 3,212,000 |
-| Hunt + others rally | 30 | 320 | 8,000 | 3,515,000 | 1,575,000 | 2,075,000 | 2,276,000 |
+The original spreadsheet’s arithmetic correctly reproduced its own inputs, including the discovery credit. The previous site normalized completed-cycle rewards per10 net stamina and multiplied by a chosen amount. Those were long-run efficiencies, not starting-budget forecasts. Legacy `calculate()`/`forStamina()` helpers and their regression fixtures remain for archival verification; the live UI uses only `simulate()`.
 
-The original rounded per-10 values are correct, including 106.666… → 107 medals for others rallying. Correcting hunt iron adds `N × 100,000` iron to each hunting cycle; at N=5 the corrected iron totals are **2,810,000** and **2,075,000**. The untouched screenshot and original CSV retain the original evidence.
+## Development, checks and maintenance
 
-## Formulas
+Serve with `python3 -m http.server 8000`, then open http://localhost:8000/. Do not use file:// because modules and CSV loading require HTTP.
 
-For each reward independently:
+- Node20+: `npm test` runs historical mathematical fixtures and the new simulation suite.
+- Browser setup: `npm ci` then `npx playwright install chromium`.
+- Browser checks against the running local server: `npm run test:browser`.
+- Use an installed Chromium with `CHROMIUM_PATH=/usr/bin/chromium npm run test:browser`.
+- Set `BASE_URL=https://bornin1984.github.io/klzn-last-war-tools` to check a deployment.
 
-- `N`: average hunts per discovered boss, 5–10.
-- `H`, `R`, `J`: stamina per hunt, own boss rally, other boss rally.
-- `C`: claimed discovery stamina, default 20.
-- `G`, `B`, `O`, `D`: hunt, own leader, other leader and discoverer rewards.
+Simulation tests cover504 independent-reference scenarios (both levels, every N5–25,12 starting balances), hand-worked examples, edited costs, accounting/ledger invariants, unsafe/free/self-funding inputs and huge lazy ledger pages. Browser checks cover both levels, representative discovery boundaries, budgets, graph/table agreement, pending bosses, ledger pagination, edits/reset, zero/invalid input, keyboard tabs and mobile layouts. Browser emulation is not physical-device certification.
 
-| Strategy | Reward per cycle | Gross stamina spent | Net stamina | Reward per 10 net stamina |
-|---|---|---|---|---|
-| Hunt + own rally | `N×G + B + D` | `N×H + R` | `N×H + R − C` | `10×(N×G+B+D)/(N×H+R−C)` |
-| Hunt + others rally | `N×G + D` | `N×H` | `N×H − C` | `10×(N×G+D)/(N×H−C)` |
-| Rally others only | `O` | `J` | `J` | `10×O/J` |
+Structure: homepage directory; shared directory CSS in `assets/`; calculator UI/model in `gold-zombies/`; evidence and CSVs in `sources/`; tests in `tests/`. The model is independent of the DOM. Never replace original evidence with corrected data. Add another tool in its own directory and link it from the homepage. Keep relative URLs for the GitHub project prefix, and retain versioned script/style URLs when deploying changed interfaces.
 
-Percentage of A relative to B: `100 × (A/B − 1)`. Both zero is displayed as 0%; a positive value relative to zero is N/A. Nonpositive net stamina or numerical overflow yields N/A and is excluded from best-value rankings; unavailable chart bars are empty. Blank, negative, non-finite or >1 trillion assumptions produce a visible validation message. Zero input costs are allowed for exploration but do not create infinite efficiency. Comparisons use full precision, with a relative 1e-10 tolerance for ties; formatting rounds only the display.
+GitHub Pages publishes **main / (root)**; `.nojekyll` avoids unnecessary processing. `.github/workflows/qa.yml` runs checks. No runtime packages or backend are needed; Playwright is development-only.
 
-The graph shows all six rewards at once, stacked vertically. Each reward has three proportional horizontal bars and its own labeled scale starting at zero. The slider updates all 18 bars together; each reward’s scale adapts to its values. Compare strategies within each reward, rather than bar lengths across different resources. Graph and table use the same pure calculation module. For a chosen stamina amount S, expected rewards are `per10 × S / 10`. This includes returned discovery stamina and may represent fractional boss cycles; it is not a simulation of exactly S upfront stamina. S must be positive, finite and at most1trillion. No unlike rewards are summed into an arbitrary score.
-
-### Which strategy wins?
-
-For the archived **level 40** spreadsheet example and the 20-stamina reward:
-
-- **Medals, drone data, iron and bread:** hunt and let others lead throughout N=5–10.
-- **Hero XP:** hunt and let others lead below approximately **5.257** hunts/discovery; lead others' bosses above that.
-- **Gold:** hunt and let others lead below **9.36**; lead others' bosses above that.
-- At either exact threshold all three strategies tie for that reward.
-
-With identical own/other leader costs and rewards, own-rally efficiency is a stamina-weighted average of the other two strategies (when both component costs are positive). It therefore cannot be the unique efficiency winner. Editing the separate rally costs/rewards can change that. For defaults, each finite break-even follows the expression below. A nonpositive denominator means no positive crossing and hunting is favored with these positive rewards.
-
-`N_break_even = (R×D + B×C) / (B×H − R×G)` when `O=B` and `J=R`.
-
-With the verified **level 55** data, hunt + others rally wins medals, drone data, iron and bread throughout N=5–10. Rally others only wins XP throughout that range (crossing at approximately 4.968, below the slider). Gold switches from hunt + others rally to rally others only at approximately **8.621**. These thresholds use the source-player-confirmed amounts. Own rally again lies between the other two.
-
-These are stamina-efficiency statements, not universal recommendations. The model assumes successful kills, collected discoverer rewards, no relevant daily caps, and linear repeats. Time, troops, healing, expired bosses, random loot, leaderboard rewards, free joins and boss availability are excluded.
-
-## Development and QA
-
-Serve without any install:
-
-```sh
-python3 -m http.server 8000
-# Open http://localhost:8000/
-```
-
-Do not open with `file://`: ES modules and CSV fetch need HTTP.
-
-Node 20+ tests (no installation required):
-
-```sh
-npm test
-```
-
-27 model tests include independent fixtures at N=5,6,7,8,9,10 with refunds 0 and 20 for all six rewards and three strategies; literal screenshot totals; the active level 55 data and archived level 40 fixtures; corrected iron; separate other-rally inputs; invalid denominators; zero rewards; bad inputs; ties/zero percentage baselines; fractional range consistency; subnormal stamina overflow.
-
-Browser tests (development dependencies only):
-
-```sh
-npm ci
-npx playwright install chromium
-# Start the local server in another terminal.
-npm run test:browser
-# Optionally use an installed browser:
-CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
-# Or verify deployment:
-BASE_URL=https://bornin1984.github.io/klzn-last-war-tools npm run test:browser
-```
-
-108 browser checks cover 375px, 768px and 1280px viewports, both boss levels,10/120 stamina budgets, all6 metrics ×6 discovery rates, proportional bars, source data agreement, shared-slider table updates, keyboard tab navigation, edits, reset and invalid fields. Browser testing is mobile emulation, not physical-device certification.
-
-## Structure and maintenance
-
-- `index.html`: directory. Add a descriptive link when a calculator is ready.
-- `assets/site.css`: directory styling.
-- `gold-zombies/calculator.css`: compact responsive graph/table styling; no font or chart CDN.
-- `gold-zombies/index.html`: calculator content, controls and evidence labels.
-- `gold-zombies/model.mjs`: pure math, validation and chart range; no DOM or display rounding.
-- `gold-zombies/app.mjs`: CSV loading, shared slider, accessible tabs, comparison/source tables and proportional bars.
-- `sources/`: original evidence, original transcription, corrected data and cited research.
-- `tests/`: Node mathematical regression tests and Playwright browser checks.
-
-For another tool, add `<tool-name>/index.html`, keep its model separate, link from the homepage and document its evidence and assumptions. Use relative URLs so all assets work under the GitHub project prefix. Do not overwrite original evidence when correcting defaults: record the reason and add regression fixtures. Updating active CSV values changes runtime defaults without editing JavaScript; update documentation and independent test fixtures intentionally.
-
-## Publication
-
-GitHub Pages serves **main / (root)**. `.nojekyll` disables unnecessary processing; no build system is required. Pushes to main trigger GitHub's Pages deployment. `.github/workflows/qa.yml` runs model and browser checks. The test dependencies are not used by the published site.
-
-To configure manually if needed: Repository **Settings → Pages → Build and deployment → Deploy from a branch → main → / (root) → Save**. Do not choose `/docs`.
-
-The table tab displays a small animated rotation cue in portrait viewports up to 900px wide. It disappears in landscape and respects reduced-motion preferences. Phone icon: [Lucide smartphone](https://github.com/lucide-icons/lucide/blob/main/icons/smartphone.svg), [ISC license](assets/licenses/lucide.txt); self-hosted, with CSS animation.
+Rotation icon: [Lucide smartphone](https://github.com/lucide-icons/lucide/blob/main/icons/smartphone.svg), [ISC license](assets/licenses/lucide.txt), self-hosted with CSS animation.
