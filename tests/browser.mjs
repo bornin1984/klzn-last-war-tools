@@ -11,7 +11,7 @@ try{
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width===375,hasTouch:width===375});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(`${base}/gold-zombies/`);await page.locator('#chart [data-strategy]').first().waitFor();
-  assert.equal(await page.locator('#n').inputValue(),'10');assert.equal(await page.locator('#budget').inputValue(),'10');
+  assert.equal(await page.locator('#n').inputValue(),'20');assert.equal(await page.locator('#budget').inputValue(),'220');
   for(const level of ['55','70']){
    await page.selectOption('#level',level);
    for(const n of [5,10,20,25])for(const stamina of [10,120,220]){
@@ -57,7 +57,7 @@ try{
  await extraPage.route('**/missing-test-level.csv',route=>route.fulfill({status:404,body:'not found'}));
  await extraPage.goto(`${base}/gold-zombies/`);await extraPage.locator('#chart [data-strategy]').first().waitFor();
  assert.equal(await extraPage.locator('#level option').count(),3);assert.equal(await extraPage.locator('#level-warning').isVisible(),true);checks++;
- await extraPage.selectOption('#level','99');await extraPage.locator('#budget').fill('120');
+ await extraPage.selectOption('#level','99');await extraPage.locator('#n').fill('10');await extraPage.locator('#n').dispatchEvent('input');await extraPage.locator('#budget').fill('120');
  assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),533);
  assert.match(await extraPage.locator('#csv').getAttribute('href'),/test-level-99/);checks++;
  await extraPage.selectOption('#level','55');assert.equal(+(await extraPage.locator('#chart [data-reward="0"] [data-strategy="0"]').getAttribute('data-value')),500);checks++;

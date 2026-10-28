@@ -7,7 +7,7 @@ Static community calculators for Last War: Survival. No backend or login. Not af
 
 ## Starting-stamina calculator
 
-Enter **starting stamina**, choose **5–25 hunts per discovery** (default10), and choose boss level55 or70 (default55). Starting stamina defaults10. The graph shows total rewards for whole affordable actions, not proportional rewards per10 stamina. Discovery refunds are reused automatically.
+Enter **starting stamina**, choose **5–25 hunts per discovery** (default20), and choose a verified boss level (default55). Starting stamina defaults220. The graph shows total rewards for whole affordable actions, not proportional rewards per10 stamina. Discovery refunds are reused automatically.
 
 The discovery setting is a deterministic scenario: one boss every N hunts, starting with no existing discovery progress. Actual drops are random. All kills are assumed successful, discovered bosses led by others are assumed defeated immediately, stamina items are claimed and redeemed immediately, and suitable bosses to lead remain available. Time, troop losses, reward caps, random loot and free joining are excluded.
 
