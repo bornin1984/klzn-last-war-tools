@@ -1,6 +1,6 @@
 import {defaults,parseRewards,calculate} from './model.mjs';
 const $=id=>document.getElementById(id);
-const labels=['Hunt, then rally your own','Hunt, then someone else rallies','Rallies only'];
+const labels=['Hunt, then rally your own','Hunt, then someone else rallies','Leading rallies only'];
 const colors=['#e98b70','#31ad9a','#7b7ce0'];
 const fmt=v=>v===null?'N/A':v.toLocaleString('en-US',{maximumFractionDigits:1});
 const short=v=>Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(v);
