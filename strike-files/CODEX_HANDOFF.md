@@ -57,6 +57,30 @@ Also check whether the 13 scouted players and power figures were transcribed cor
 4. Improve mobile horizontal table usability and test the pie chart/counts/percentages.
 5. Show the user a visual preview rather than asking them to interpret a PR. Merge/deploy only when approved.
 
+## Explicit squad-number transcription (millions of power)
+
+**Required:** Squad 1, Squad 2, Squad 3, and Squad 4 are four distinct fields. Do not compress observed powers into a positional array, reassign a power to a different slot, or infer that the strongest formation is Squad 1. A `?` means not confirmed in the screenshot/transcription, NOT zero. These positions reproduce the earlier in-chat scouting table, pending reinspection of screenshots.
+
+| Player | Squad 1 | Squad 2 | Squad 3 | Squad 4 | Other observed reinforcement belonging to player (slot unconfirmed) |
+|---|---:|---:|---:|---:|---|
+| Trojan zzz | 25.38 | ? | ? | ? | ? |
+| END NACK | 24.01 | ? | ? | ? | 17.88 |
+| NKS Navigator | 23.78 | 18.36 | ? | ? | ? |
+| King Omboo | 22.96 | 16.35 | 15.38 | 3.30 | ? |
+| Kaifong22 | 22.56 | ? | ? | ? | ? |
+| Gaijin | 22.48 | 12.14 | ? | ? | ? |
+| Elf boy | 22.32 | ? | 15.64 | ? | ? |
+| CALLMEBO | 22.21 | 16.12 | 13.48 | 10.33 | ? |
+| jendral ganda juve | 22.09 | 16.66 | 16.43 | 12.13 | ? |
+| RANAKAPUTRA | 21.81 | ? | ? | ? | ? |
+| Milkow | 21.32 | ? | ? | ? | ? |
+| Komandan Hansipp | 17.97 | 13.06 | 11.48 | 11.08 | ? |
+| VerSashi | ? | ? | ? | ? | 15.21 |
+
+**Crucial:** END NACK's 17.88M reinforcement and VerSashi's 15.21M reinforcement are attributed to those *players*, not to the bases where observed. Their exact Squad 1–4 slot is not established by the existing chat transcription. The original screenshots may show the squad number: inspect them and fill in the proper slot. If not legible, leave the numbered slot as `?` and retain the power as an unassigned observed formation. Likewise verify each numbered slot above against the screenshot before asserting it as confirmed.
+
+The current JSON still contains compact `squads` arrays; **they are not authoritative positional data**. Migrate the JSON to explicit slots and update the UI. A correct default sort uses the maximum observed power from numbered squads *and* unassigned observed reinforcements. Keep `?` for all unknown slots. Also capture tank/air/missile classification per squad if heroes are legible, otherwise Unknown.
+
 ## Known observations from previous chat (millions of power)
 
 Trojan zzz 25.38; END NACK 24.01 (also observed reinforcing with 17.88); NKS Navigator 23.78 and 18.36; King Omboo 22.96 / 16.35 / 15.38 / 3.30; Kaifong22 22.56; Gaijin 22.48 / 12.14; Elf boy S1 22.32, S3 15.64; CALLMEBO 22.21 / 16.12 / 13.48 / 10.33; jendral ganda juve 22.09 / 16.66 / 16.43 / 12.13; RANAKAPUTRA 21.81; Milkow 21.32; Komandan Hansipp 17.97 / 13.06 / 11.48 / 11.08; VerSashi 15.21 observed as reinforcement (squad slot unknown).
