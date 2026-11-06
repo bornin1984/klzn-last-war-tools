@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Strike Files | KLZN Last War Tools</title><link rel="stylesheet" href="../assets/site.css">
+<style>
+body{color:#f3f5fc}main{max-width:1100px;margin:auto;padding:24px}nav{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0}nav a{padding:10px 16px;border:1px solid #66728c;border-radius:9px;color:inherit;text-decoration:none}.active{background:#314b79}
+section{border:1px solid #57627c;border-radius:14px;padding:20px;margin:20px 0;background:#172138}h1,h2{margin:.4em 0}.muted{opacity:.75}.stats{display:flex;gap:12px;flex-wrap:wrap}.stat{border:1px solid #53617d;border-radius:9px;padding:12px;min-width:140px}.stat strong{display:block;font-size:1.5em}
+.chart{display:flex;gap:28px;align-items:center;flex-wrap:wrap}canvas{max-width:280px;width:100%;height:auto}.legend{display:grid;gap:7px} .legend div{display:flex;align-items:center;gap:8px}.swatch{width:12px;height:12px;display:inline-block}
+.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{text-align:left;padding:10px;border-bottom:1px solid #3d4b66;white-space:nowrap}th{cursor:pointer;color:#f3c96b}th:hover{text-decoration:underline}input{background:#101a2e;color:white;border:1px solid #71809d;border-radius:8px;padding:10px;width:min(100%,320px)}.note{font-size:.85em;opacity:.8}
+</style></head><body><header><a href="../">KLZN / Last War Tools</a><a href="https://github.com/bornin1984/klzn-last-war-tools">GitHub ↗</a></header>
+<main><nav><a href="../gold-zombies/">Gold Zombies</a><a class="active" href="./">Strike Files</a></nav><div class="eyebrow">KLZN / ENEMY INTELLIGENCE</div><h1>Strike Files</h1><p class="muted">Scouting intelligence. Squad power belongs to the player who owns the formation, including reinforcements seen elsewhere.</p>
+<section><div class="eyebrow">SERVER 2247 · ROnE</div><h2>RiseAsOne</h2><div class="stats" id="stats"></div></section>
+<section><h2>HQ distribution</h2><p class="muted">All alliance members · count and percentage</p><div class="chart"><canvas id="pie" width="280" height="280" aria-label="HQ level distribution pie chart" role="img"></canvas><div id="legend" class="legend"></div></div></section>
+<section><h2>Alliance roster</h2><p class="note">Default: strongest observed squad descending; players without a scout appear last. Click any column to sort. A dash means not observed, not zero.</p><input id="filter" placeholder="Search player name or rank" aria-label="Search players"><div class="tablewrap"><table><thead><tr><th data-sort="name">Player</th><th data-sort="rank">Rank</th><th data-sort="hq">HQ</th><th data-sort="power">Total power</th><th data-sort="max">Strongest squad ↓</th><th>Observed squads</th></tr></thead><tbody id="roster"></tbody></table></div></section>
+</main><footer>KLZN Last War Tools · Independent community project.</footer>
+<script>
+const fmt=n=>n==null?'—':n.toFixed(2)+'M';
+let people=[],sort='max',desc=true;
+fetch('./rone-2247.json').then(r=>{if(!r.ok)throw Error('Data unavailable');return r.json()}).then(data=>{
+ people=data.players.map(p=>({...p,max:p.squads.length?Math.max(...p.squads):null}));
+ document.getElementById('stats').innerHTML=[['Members',people.length],['Scouted',people.filter(p=>p.max!=null).length],['Alliance power',(data.alliancePower/1e9).toFixed(2)+'B'],['Server',data.server]].map(([k,v])=>'<div class="stat"><span>'+k+'</span><strong>'+v+'</strong></div>').join('');
+ const counts={};people.forEach(p=>counts[p.hq]=(counts[p.hq]||0)+1);
+ const levels=Object.keys(counts).map(Number).sort((a,b)=>b-a),colors=['#e8b44b','#528bdc','#50b7a5','#bd82d8','#f08c68','#7c9eec','#a7c66a','#d67f9e'];
+ const canvas=document.getElementById('pie'),ctx=canvas.getContext('2d');let start=-Math.PI/2;
+ levels.forEach((level,i)=>{const end=start+counts[level]/people.length*Math.PI*2;ctx.beginPath();ctx.moveTo(140,140);ctx.arc(140,140,125,start,end);ctx.closePath();ctx.fillStyle=colors[i];ctx.fill();start=end});
+ document.getElementById('legend').innerHTML=levels.map((level,i)=>'<div><span class="swatch" style="background:'+colors[i]+'"></span>HQ '+level+': <strong>'+counts[level]+'</strong> ('+(100*counts[level]/people.length).toFixed(1)+'%)</div>').join('');
+ render();
+}).catch(e=>{document.getElementById('roster').textContent=e.message});
+function render(){const q=document.getElementById('filter').value.toLowerCase();let rows=people.filter(p=>(p.name+' '+p.rank).toLowerCase().includes(q));rows.sort((a,b)=>{if(sort==='max'){if(a.max==null)return b.max==null?0:1;if(b.max==null)return -1}let x=a[sort],y=b[sort],c=typeof x==='number'&&typeof y==='number'?x-y:String(x).localeCompare(String(y));return desc?-c:c});
+const body=document.getElementById('roster');body.replaceChildren();rows.forEach(p=>{const tr=document.createElement('tr');[p.name,p.rank,p.hq,p.power.toFixed(1)+'M',fmt(p.max),p.squads.length?p.squads.map(fmt).join(' / '):'—'].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});body.appendChild(tr)})}
+document.getElementById('filter').addEventListener('input',render);
+document.querySelectorAll('th[data-sort]').forEach(th=>th.addEventListener('click',()=>{const key=th.dataset.sort;if(sort===key)desc=!desc;else{sort=key;desc=key!=='name'&&key!=='rank'}render()}));
+</script></body></html>
