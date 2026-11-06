@@ -1,0 +1,604 @@
+{
+  "id": "rone-2247",
+  "name": "RiseAsOne",
+  "tag": "ROnE",
+  "server": 2247,
+  "alliancePower": 5601391779,
+  "players": [
+    {
+      "name": "Leo Plov",
+      "hq": 30,
+      "power": 101.1,
+      "rank": "R5",
+      "squads": []
+    },
+    {
+      "name": "Trojan zzz",
+      "hq": 30,
+      "power": 86.9,
+      "rank": "R4",
+      "squads": [
+        25.38
+      ]
+    },
+    {
+      "name": "Yos Doang",
+      "hq": 29,
+      "power": 95.2,
+      "rank": "R4",
+      "squads": []
+    },
+    {
+      "name": "Mr FeelGood",
+      "hq": 29,
+      "power": 86.8,
+      "rank": "R4",
+      "squads": []
+    },
+    {
+      "name": "VerSashi",
+      "hq": 30,
+      "power": 93.8,
+      "rank": "R4",
+      "squads": [
+        15.21
+      ]
+    },
+    {
+      "name": "Elf boy",
+      "hq": 30,
+      "power": 77.4,
+      "rank": "R4",
+      "squads": [
+        22.32,
+        15.64
+      ]
+    },
+    {
+      "name": "NKS Navigator",
+      "hq": 30,
+      "power": 88.7,
+      "rank": "R4",
+      "squads": [
+        23.78,
+        18.36
+      ]
+    },
+    {
+      "name": "BumBumi",
+      "hq": 30,
+      "power": 90.4,
+      "rank": "R4",
+      "squads": []
+    },
+    {
+      "name": "END NACK",
+      "hq": 30,
+      "power": 87.6,
+      "rank": "R4",
+      "squads": [
+        24.01,
+        17.88
+      ]
+    },
+    {
+      "name": "King Omboo",
+      "hq": 29,
+      "power": 105.5,
+      "rank": "R3",
+      "squads": [
+        22.96,
+        16.35,
+        15.38,
+        3.3
+      ]
+    },
+    {
+      "name": "Hulwah14",
+      "hq": 28,
+      "power": 77.3,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "BRADLEY",
+      "hq": 29,
+      "power": 58.3,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "allllllllllllll89",
+      "hq": 28,
+      "power": 88.5,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "J4NOKO",
+      "hq": 28,
+      "power": 73.3,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "SINCANNN",
+      "hq": 30,
+      "power": 87.6,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Komandan Hansipp",
+      "hq": 30,
+      "power": 59,
+      "rank": "R3",
+      "squads": [
+        17.97,
+        13.06,
+        11.48,
+        11.08
+      ]
+    },
+    {
+      "name": "II KOMENG II",
+      "hq": 30,
+      "power": 95.1,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "くまラーメン",
+      "hq": 28,
+      "power": 78.6,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Losangeles1117",
+      "hq": 28,
+      "power": 69.3,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Mamato08",
+      "hq": 29,
+      "power": 72.3,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "KinTTT",
+      "hq": 30,
+      "power": 89,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Gaijin",
+      "hq": 30,
+      "power": 99.7,
+      "rank": "R3",
+      "squads": [
+        22.48,
+        12.14
+      ]
+    },
+    {
+      "name": "CELENGAN GIBRAN",
+      "hq": 29,
+      "power": 103.2,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Pullpy Alkhassa",
+      "hq": 25,
+      "power": 59,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "SUPER BAHLILL",
+      "hq": 30,
+      "power": 102.5,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "JUNN96",
+      "hq": 29,
+      "power": 40,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "RANAKAPUTRA",
+      "hq": 30,
+      "power": 89.9,
+      "rank": "R3",
+      "squads": [
+        21.81
+      ]
+    },
+    {
+      "name": "Lowless",
+      "hq": 29,
+      "power": 88.2,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Krotiko",
+      "hq": 27,
+      "power": 57,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Milkow",
+      "hq": 30,
+      "power": 101.2,
+      "rank": "R3",
+      "squads": [
+        21.32
+      ]
+    },
+    {
+      "name": "Sempak Batman",
+      "hq": 27,
+      "power": 68,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "CALLMEBO",
+      "hq": 30,
+      "power": 97,
+      "rank": "R3",
+      "squads": [
+        22.21,
+        16.12,
+        13.48,
+        10.33
+      ]
+    },
+    {
+      "name": "Cheng lee",
+      "hq": 26,
+      "power": 38.5,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "jendral ganda juve",
+      "hq": 30,
+      "power": 100.3,
+      "rank": "R3",
+      "squads": [
+        22.09,
+        16.66,
+        16.43,
+        12.13
+      ]
+    },
+    {
+      "name": "Bluefirez26",
+      "hq": 28,
+      "power": 74,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Ellys4",
+      "hq": 29,
+      "power": 68.9,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Kaifong22",
+      "hq": 30,
+      "power": 106.9,
+      "rank": "R3",
+      "squads": [
+        22.56
+      ]
+    },
+    {
+      "name": "steeevoooo",
+      "hq": 30,
+      "power": 90.7,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Eka Quenn",
+      "hq": 28,
+      "power": 84.9,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "AE165",
+      "hq": 29,
+      "power": 83.8,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Mas buahliil ganteng",
+      "hq": 29,
+      "power": 60.6,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "LenTera",
+      "hq": 29,
+      "power": 79.7,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "ADEN MIJON",
+      "hq": 29,
+      "power": 96.5,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Alexbahliil88",
+      "hq": 28,
+      "power": 57.6,
+      "rank": "R3",
+      "squads": []
+    },
+    {
+      "name": "Kopral Beri",
+      "hq": 26,
+      "power": 32.1,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "Yaannzzz",
+      "hq": 27,
+      "power": 52.3,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "fen less",
+      "hq": 27,
+      "power": 63.2,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "Wang Lin Val",
+      "hq": 29,
+      "power": 61.6,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "KINDERJOOY",
+      "hq": 30,
+      "power": 94.8,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "crdaTzy",
+      "hq": 26,
+      "power": 42.4,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "Jordeus",
+      "hq": 27,
+      "power": 90.5,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "Archilez89",
+      "hq": 30,
+      "power": 79.6,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "Iroha01",
+      "hq": 26,
+      "power": 61.2,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "vieviezu",
+      "hq": 29,
+      "power": 61.9,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "Muhammad Thoha Hasan",
+      "hq": 24,
+      "power": 50.7,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "BAHL1L",
+      "hq": 29,
+      "power": 77,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "指揮官275862247",
+      "hq": 25,
+      "power": 58,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "Pinkwine16",
+      "hq": 27,
+      "power": 50.2,
+      "rank": "R2",
+      "squads": []
+    },
+    {
+      "name": "KleponGethuk",
+      "hq": 27,
+      "power": 39.9,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "ちくわおでん98",
+      "hq": 30,
+      "power": 93,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "RoxXane",
+      "hq": 27,
+      "power": 63.4,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "VLANDDY",
+      "hq": 28,
+      "power": 62.1,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "gghhghrhehehehehehe",
+      "hq": 29,
+      "power": 45.9,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "KOCAK1212",
+      "hq": 29,
+      "power": 39.7,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Zickmund",
+      "hq": 25,
+      "power": 57.2,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "pawffel",
+      "hq": 30,
+      "power": 69.8,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "ibaww",
+      "hq": 19,
+      "power": 8.8,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Kopisopisusu",
+      "hq": 26,
+      "power": 37.1,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "flying white tiger",
+      "hq": 29,
+      "power": 98.5,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "PICCAeZ",
+      "hq": 28,
+      "power": 38.2,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Ripbons",
+      "hq": 29,
+      "power": 67.4,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Yzfeng",
+      "hq": 27,
+      "power": 51,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Joe Jambull",
+      "hq": 30,
+      "power": 78.9,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Komandan Bodrek",
+      "hq": 26,
+      "power": 28.6,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "eeryy",
+      "hq": 27,
+      "power": 41.6,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "sipacullen",
+      "hq": 27,
+      "power": 43.8,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Xavierra22",
+      "hq": 24,
+      "power": 14.6,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "Dee Byge",
+      "hq": 27,
+      "power": 77.9,
+      "rank": "R1",
+      "squads": []
+    },
+    {
+      "name": "PaPaWaL",
+      "hq": 29,
+      "power": 54.5,
+      "rank": "R1",
+      "squads": []
+    }
+  ]
+}
